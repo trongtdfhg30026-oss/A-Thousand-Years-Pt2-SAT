@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Thousand Years (Pt. 2) - Sheet Nhạc 3 Bè SAT & Máy Phát Đồng Bộ</title>
+  <title>A Thousand Years (Pt. 2) - SAT</title>
   <!-- ABCjs Basic Library -->
   <script src="abcjs-basic-min.js"></script>
   <!-- Google Fonts -->
@@ -24,21 +24,18 @@
     <!-- DECK HEADER -->
     <div class="deck-header">
       <div class="song-title-group">
-        <h1>🎼 A Thousand Years (Part 2)</h1>
+        <h1>A Thousand Years (Pt. 2)</h1>
         <div class="meta">
           <span>Christina Perri ft. Steve Kazee</span>
-          <span class="meta-tag">Tone B♭ Trưởng (2 Giáng)</span>
-          <span class="meta-tag">Nhịp 6/8</span>
-          <span class="meta-tag">Tempo: 50 BPM</span>
         </div>
       </div>
 
       <!-- SINGER LEGEND (3 BÈ SAT) -->
       <div class="vocal-legend">
-        <span class="legend-chip chip-soprano">🔴 Nữ 1 (Cao)</span>
-        <span class="legend-chip chip-alto">🟣 Nữ 2 (Trầm)</span>
-        <span class="legend-chip chip-tenor">🔵 Nam (Cao)</span>
-        <span class="legend-chip chip-trio">🟡 Tam ca 3 Bè (SAT)</span>
+        <span class="legend-chip chip-soprano">🔴 Nữ 1</span>
+        <span class="legend-chip chip-alto">🟣 Nữ 2</span>
+        <span class="legend-chip chip-tenor">🔵 Nam</span>
+        <span class="legend-chip chip-trio">🟡 Tam ca</span>
       </div>
     </div>
 
@@ -47,58 +44,47 @@
       <div class="transport-buttons">
         <button class="btn-play" id="btn-play" onclick="togglePlay()">
           <span id="play-icon">▶</span>
-          <span id="play-text">Phát Nhạc</span>
+          <span id="play-text">Phát</span>
         </button>
-        <button class="btn-ctrl" onclick="seekRelative(-5)" title="Tua lùi 5 giây">⏪ -5s</button>
-        <button class="btn-ctrl" onclick="seekRelative(5)" title="Tua tới 5 giây">⏩ +5s</button>
-        <button class="btn-ctrl" id="btn-loop" onclick="toggleLoop()" title="Lặp lại đoạn phân cảnh đang hát">🔁 Lặp Đoạn</button>
-        <button class="btn-ctrl" id="btn-autoscroll" onclick="toggleAutoScroll()" title="Bật/Tắt tự động cuộn sheet theo nhịp hát">📜 Cuộn: TẮT (Cố định)</button>
+        <button class="btn-ctrl" onclick="seekRelative(-5)" title="Tua -5s">⏪ 5s</button>
+        <button class="btn-ctrl" onclick="seekRelative(5)" title="Tua +5s">⏩ 5s</button>
+        <button class="btn-ctrl" id="btn-autoscroll" onclick="toggleAutoScroll()" title="Tự động cuộn theo sheet">📜 Cuộn: Tắt</button>
       </div>
 
       <div class="timeline-wrapper">
-        <div class="progress-bar-container" id="seek-bar" onclick="handleSeekClick(event)" title="Nhấn vào thanh để tua nhạc">
+        <div class="progress-bar-container" id="seek-bar" onclick="handleSeekClick(event)" title="Tua nhạc">
           <div class="progress-bar-fill" id="progress-bar"></div>
         </div>
         <div class="time-text" id="time-display">00:00 / 05:00</div>
-        <span class="audio-status-badge status-checking" id="audio-status" title="Trạng thái nguồn âm thanh">🎵 Audio: Đang nạp...</span>
       </div>
 
       <div class="right-tools">
-        <a href="A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf" download class="btn-ctrl btn-download-pdf" title="Tải file Sheet Nhạc PDF chuẩn A4 tiết kiệm giấy">📥 Tải Sheet (PDF)</a>
-        <a href="download_sheet.html" target="_blank" class="btn-ctrl btn-print-page" title="Mở trang xem và in A4 riêng biệt">📄 Bản In A4</a>
         <div class="audio-mode-selector" id="audio-mode-group">
-          <button class="mode-btn active" id="btn-mode-vocal" onclick="switchAudioMode('vocal')" title="Phát bản Có Lời (300s)">🎤 Có Lời (Vocal)</button>
-          <button class="mode-btn" id="btn-mode-inst" onclick="switchAudioMode('instrumental')" title="Phát bản Beat Không Lời (300s)">🎵 Không Lời (Beat)</button>
-          <button class="mode-btn" id="btn-mode-video" onclick="switchAudioMode('video')" title="Phát bản Video Gốc (300s)">🎬 Video Gốc</button>
+          <button class="mode-btn active" id="btn-mode-vocal" onclick="switchAudioMode('vocal')">🎤 Có lời</button>
+          <button class="mode-btn" id="btn-mode-inst" onclick="switchAudioMode('instrumental')">🎵 Beat</button>
+          <button class="mode-btn" id="btn-mode-video" onclick="switchAudioMode('video')">🎬 Video</button>
         </div>
-        <button class="btn-ctrl btn-upload" onclick="document.getElementById('audio-file-input').click()" title="Chọn file nhạc từ máy tính nếu trình duyệt chặn nạp audio">📁 Chọn MP3</button>
         <div class="zoom-group">
-          <button class="zoom-btn" onclick="changeZoom(-0.1)" title="Thu nhỏ kích thước sheet">−</button>
+          <button class="zoom-btn" onclick="changeZoom(-0.1)" title="Thu nhỏ">−</button>
           <span class="zoom-text" id="zoom-text">100%</span>
-          <button class="zoom-btn" onclick="changeZoom(0.1)" title="Phóng to kích thước sheet">+</button>
+          <button class="zoom-btn" onclick="changeZoom(0.1)" title="Phóng to">+</button>
         </div>
-        <button class="btn-ctrl" onclick="window.print()" title="In sheet nhạc ra giấy hoặc xuất file PDF">🖨 In Sheet</button>
+        <a href="A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf" download class="btn-ctrl btn-download-pdf" title="Tải PDF">📥 PDF</a>
+        <button class="btn-ctrl" onclick="window.print()" title="In sheet">🖨 In</button>
       </div>
     </div>
 
-    <!-- SECTION PILLS NAVIGATION -->
-    <div class="section-pills-bar" id="pills-container"></div>
-
     <!-- LIVE KARAOKE APP LYRIC SCREEN -->
     <div class="live-karaoke-hud" id="live-hud">
-      <div class="karaoke-side-tag">
-        <div id="hud-badge" class="hud-badge chip-intro">Nhạc dạo Piano</div>
-        <div class="hud-measure-tag" id="hud-m-tag">Ô nhịp: M1 / 122</div>
-      </div>
       <div class="karaoke-screen">
-        <div class="karaoke-line line-prev" id="hud-prev">...</div>
-        <div class="karaoke-line line-active" id="hud-lyric">Đang chờ phát nhạc... Bấm "Phát Nhạc" để bắt đầu theo dõi sheet.</div>
-        <div class="karaoke-line line-next" id="hud-next">Chuẩn bị: Verse 1A (Nữ 1 Cao) lúc 00:20</div>
+        <div class="karaoke-line line-prev" id="hud-prev"></div>
+        <div class="karaoke-line line-active" id="hud-lyric">Sẵn sàng...</div>
+        <div class="karaoke-line line-next" id="hud-next">The day we met (00:20)</div>
       </div>
       <div class="karaoke-voice-split" id="hud-voice-split">
-        <div class="split-item voice-sop" id="split-sop"><span class="badge-dot dot-sop"></span> N1 (Cao): <span>-</span></div>
-        <div class="split-item voice-alt" id="split-alt"><span class="badge-dot dot-alt"></span> N2 (Trầm): <span>-</span></div>
-        <div class="split-item voice-ten" id="split-ten"><span class="badge-dot dot-ten"></span> Nam (Cao): <span>-</span></div>
+        <div class="split-item voice-sop" id="split-sop"><span class="badge-dot dot-sop"></span> N1: <span>—</span></div>
+        <div class="split-item voice-alt" id="split-alt"><span class="badge-dot dot-alt"></span> N2: <span>—</span></div>
+        <div class="split-item voice-ten" id="split-ten"><span class="badge-dot dot-ten"></span> Nam: <span>—</span></div>
       </div>
     </div>
   </header>
@@ -115,4 +101,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-

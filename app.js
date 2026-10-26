@@ -9,7 +9,7 @@ const playText = document.getElementById("play-text");
 const progressBar = document.getElementById("progress-bar");
 const timeDisplay = document.getElementById("time-display");
 const zoomText = document.getElementById("zoom-text");
-const loopBtn = document.getElementById("btn-loop");
+
 const autoScrollBtn = document.getElementById("btn-autoscroll");
 
 let isPlaying = false;
@@ -63,13 +63,13 @@ function switchAudioMode(mode) {
   currentAudioSource = mode;
 
   let src = "vocal.mp3";
-  let label = "🎤 Có Lời (Vocal)";
+  let label = "🎤 Có lời";
   if (mode === "instrumental") {
     src = "instrumental.mp3";
-    label = "🎵 Không Lời (Beat)";
+    label = "🎵 Beat";
   } else if (mode === "video") {
     src = "lyrics_video.mp4";
-    label = "🎬 Video Gốc";
+    label = "🎬 Video";
   }
 
   // Update mode buttons UI
@@ -110,7 +110,7 @@ function toggleAudioSource() {
 function toggleAutoScroll() {
   autoScrollEnabled = !autoScrollEnabled;
   if (autoScrollBtn) {
-    autoScrollBtn.textContent = autoScrollEnabled ? "📜 Cuộn: BẬT" : "📜 Cuộn: TẮT (Cố định)";
+    autoScrollBtn.textContent = autoScrollEnabled ? "📜 Cuộn: Bật" : "📜 Cuộn: Tắt";
     autoScrollBtn.classList.toggle("btn-active", autoScrollEnabled);
   }
 }
@@ -135,7 +135,7 @@ audio.addEventListener("play", () => {
   isPlaying = true;
   useVirtualClock = false;
   playIcon.textContent = "⏸";
-  playText.textContent = "Tạm Dừng";
+  playText.textContent = "Tạm dừng";
   startAnimation();
 });
 
@@ -143,7 +143,7 @@ audio.addEventListener("pause", () => {
   if (!useVirtualClock) {
     isPlaying = false;
     playIcon.textContent = "▶";
-    playText.textContent = "Phát Nhạc";
+    playText.textContent = "Phát";
     cancelAnimationFrame(animFrameId);
   }
 });
@@ -152,7 +152,7 @@ audio.addEventListener("ended", () => {
   isPlaying = false;
   useVirtualClock = false;
   playIcon.textContent = "▶";
-  playText.textContent = "Phát Lại";
+  playText.textContent = "Phát lại";
   cancelAnimationFrame(animFrameId);
 });
 
@@ -186,7 +186,7 @@ function playAudio() {
       isPlaying = true;
       useVirtualClock = false;
       playIcon.textContent = "⏸";
-      playText.textContent = "Tạm Dừng";
+      playText.textContent = "Tạm dừng";
       startAnimation();
       const label = currentAudioSource === "vocal" ? "🎤 Có Lời" : (currentAudioSource === "instrumental" ? "🎵 Beat" : "🎬 Video");
       updateAudioStatus(label + " Đang phát", "ready");
@@ -196,7 +196,7 @@ function playAudio() {
       virtualStartTime = performance.now() - (audio.currentTime || 0) * 1000;
       isPlaying = true;
       playIcon.textContent = "⏸";
-      playText.textContent = "Tạm Dừng";
+      playText.textContent = "Tạm dừng";
       startAnimation();
       updateAudioStatus("⏱ Đang chạy mô phỏng nhịp chuẩn", "fallback");
     });
@@ -210,7 +210,7 @@ function pauseAudio() {
     useVirtualClock = false;
   }
   playIcon.textContent = "▶";
-  playText.textContent = "Phát Nhạc";
+  playText.textContent = "Phát";
   cancelAnimationFrame(animFrameId);
   updateAudioStatus("⏸ Tạm dừng", "ready");
 }
@@ -224,24 +224,7 @@ function toggleLoop() {
 }
 
 // Navigation Pills
-function renderPills() {
-  const container = document.getElementById("pills-container");
-  if (!container) return;
-  container.innerHTML = "";
 
-  sectionsData.forEach(sec => {
-    const pill = document.createElement("button");
-    pill.className = "sec-pill " + (sec.badge || "chip-intro");
-    pill.id = "pill-" + sec.id;
-    pill.textContent = sec.title;
-    pill.title = sec.singer + " (" + formatTime(sec.startT) + " - " + formatTime(sec.endT) + ")";
-    pill.onclick = () => {
-      seekToTime(sec.startT);
-      if (!isPlaying) playAudio();
-    };
-    container.appendChild(pill);
-  });
-}
 
 // Full Score ABC Rendering with 3-Stave SAT Voicing
 function renderSheet() {
@@ -249,9 +232,7 @@ function renderSheet() {
   if (!target) return;
 
   let abc = "X:1\n";
-  abc += "T:A Thousand Years (Pt. 2)\n";
-  abc += "C:Christina Perri ft. Steve Kazee • Bè SAT (3 Giọng Đồng Bộ)\n";
-  abc += "M:6/8\n";
+abc += "M:6/8\n";
   abc += "L:1/8\n";
   abc += "Q:3/8=50\n";
   abc += "K:Bb\n";
@@ -281,7 +262,7 @@ function renderSheet() {
       responsive: "resize",
       add_classes: true,
       scale: currentScale,
-      staffwidth: 960,
+      staffwidth: 1060,
       paddingtop: 15,
       paddingbottom: 30,
       paddingleft: 20,
@@ -374,7 +355,7 @@ function updatePlayback(curT) {
     isPlaying = false;
     useVirtualClock = false;
     playIcon.textContent = "▶";
-    playText.textContent = "Phát Lại";
+    playText.textContent = "Phát lại";
     cancelAnimationFrame(animFrameId);
     curT = songDuration;
   }
@@ -399,16 +380,7 @@ function updatePlayback(curT) {
     return;
   }
 
-  // Update Section Pill highlight
-  if (!activeSec || activeSec.id !== curSec.id) {
-    activeSec = curSec;
-    document.querySelectorAll(".sec-pill").forEach(p => p.classList.remove("active"));
-    const curPill = document.getElementById("pill-" + curSec.id);
-    if (curPill) {
-      curPill.classList.add("active");
-      curPill.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    }
-  }
+  
 
   // Identify Current Measure
   let curMIdx = 0;
@@ -423,7 +395,7 @@ function updatePlayback(curT) {
   }
 
   const curMeasure = measuresData[curMIdx];
-  highlightMeasure(curMIdx, curT, curMeasure.startT, curMeasure.endT, curMeasure.role);
+  highlightPhrase(curMeasure.card_idx, curMeasure.role);
 
   // HUD Synchronized directly to active measure & lyrics
   const hudBadge = document.getElementById("hud-badge");
@@ -464,7 +436,7 @@ function updatePlayback(curT) {
         }
       }
     }
-    hudPrev.textContent = prevTxt || (curMIdx > 0 ? measuresData[curMIdx - 1].text : "Bắt đầu bài hát");
+    hudPrev.textContent = prevTxt || "";
   }
 
   if (hudLyric) {
@@ -484,27 +456,27 @@ function updatePlayback(curT) {
         }
       }
     }
-    hudNext.textContent = nextTxt || (curMIdx < measuresData.length - 1 ? measuresData[curMIdx + 1].text : "Kết thúc bài hát");
+    hudNext.textContent = nextTxt || "";
   }
 
   if (splitSop) {
     const txt = curMeasure.sop_lyr || "—";
     const isActive = !!txt && txt !== "—";
-    splitSop.innerHTML = '<span class="role-lbl">🔴 N1 Cao</span> <span class="lyr-txt">' + txt + '</span>';
+    splitSop.innerHTML = '<span class="badge-dot dot-sop"></span> N1: <span>' + txt + '</span>';
     splitSop.classList.toggle("active-voice", isActive);
   }
 
   if (splitAlt) {
     const txt = curMeasure.alt_lyr || "—";
     const isActive = !!txt && txt !== "—";
-    splitAlt.innerHTML = '<span class="role-lbl">🟣 N2 Trầm</span> <span class="lyr-txt">' + txt + '</span>';
+    splitAlt.innerHTML = '<span class="badge-dot dot-alt"></span> N2: <span>' + txt + '</span>';
     splitAlt.classList.toggle("active-voice", isActive);
   }
 
   if (splitTen) {
     const txt = curMeasure.ten_lyr || "—";
     const isActive = !!txt && txt !== "—";
-    splitTen.innerHTML = '<span class="role-lbl">🔵 Nam Cao</span> <span class="lyr-txt">' + txt + '</span>';
+    splitTen.innerHTML = '<span class="badge-dot dot-ten"></span> Nam: <span>' + txt + '</span>';
     splitTen.classList.toggle("active-voice", isActive);
   }
 
@@ -514,58 +486,27 @@ function updatePlayback(curT) {
 }
 
 // Highlight Measure Across All 3 Staves (Soft glow on active notes & lyrics)
-function highlightMeasure(mIdx, curT, startT, endT, role) {
+let currentActiveCard = -1;
+function highlightPhrase(activeCardIdx, role) {
   const svg = document.querySelector("#sheet-paper svg");
   if (!svg) return;
 
-  // Fetch cached bounding box
-  let boxData = measureBBoxes[mIdx];
-  if (!boxData) {
-    const allElements = Array.from(svg.querySelectorAll(".abcjs-mm" + mIdx));
-    if (!allElements || allElements.length === 0) return;
-    const elements = allElements.filter(el => 
-      !el.classList.contains("abcjs-staff-extra") && 
-      !el.classList.contains("abcjs-voice-name")
-    );
-    if (elements.length === 0) return;
-
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-    elements.forEach(el => {
-      try {
-        const b = el.getBBox();
-        if (b.width > 0 && b.height > 0) {
-          if (b.x < minX) minX = b.x;
-          if (b.y < minY) minY = b.y;
-          if (b.x + b.width > maxX) maxX = b.x + b.width;
-          if (b.y + b.height > maxY) maxY = b.y + b.height;
-        }
-      } catch (e) {}
-    });
-
-    if (minX === Infinity) return;
-    const padX = 6, padY = 8;
-    boxData = {
-      boxX: minX - padX,
-      boxY: minY - padY,
-      boxW: (maxX - minX) + (padX * 2),
-      boxH: (maxY - minY) + (padY * 2)
-    };
-    measureBBoxes[mIdx] = boxData;
-  }
-
-  // Remove red playhead line and measure-box if present (user explicitly requested no running box/line)
   svg.querySelectorAll(".active-playhead-line, #playhead-line, #measure-box, .active-measure-box").forEach(el => el.remove());
 
-  // Highlight active notes & lyrics with specific voice singer colors
-  if (currentM !== mIdx) {
-    currentM = mIdx;
+  if (currentActiveCard === activeCardIdx) return;
+  currentActiveCard = activeCardIdx;
 
-    // Reset previous active elements
-    svg.querySelectorAll(".live-active-item, .live-soprano, .live-alto, .live-tenor, .live-trio").forEach(el => {
-      el.classList.remove("live-active-item", "live-soprano", "live-alto", "live-tenor", "live-trio");
-    });
+  svg.querySelectorAll(".live-phrase-active, .live-active-item, .live-soprano, .live-alto, .live-tenor, .live-trio").forEach(el => {
+    el.classList.remove("live-phrase-active", "live-active-item", "live-soprano", "live-alto", "live-tenor", "live-trio");
+  });
 
-    // Apply voice-specific glow to current measure elements (exclude staff lines, clefs, bar numbers)
+  if (activeCardIdx < 0) return;
+
+  const phraseMeasures = measuresData.filter(m => m.card_idx === activeCardIdx);
+  if (phraseMeasures.length === 0) return;
+
+  phraseMeasures.forEach(m => {
+    const mIdx = m.m_idx;
     const activeElements = svg.querySelectorAll(".abcjs-mm" + mIdx);
     activeElements.forEach(el => {
       if (
@@ -579,7 +520,7 @@ function highlightMeasure(mIdx, curT, startT, endT, role) {
         return;
       }
 
-      el.classList.add("live-active-item");
+      el.classList.add("live-phrase-active", "live-active-item");
       if (el.classList.contains("abcjs-v0")) {
         el.classList.add("live-soprano");
       } else if (el.classList.contains("abcjs-v1")) {
@@ -593,32 +534,50 @@ function highlightMeasure(mIdx, curT, startT, endT, role) {
         else el.classList.add("live-trio");
       }
     });
+  });
 
-    // SYSTEM-ROW STEPPING AUTO-SCROLL:
-    // Only scroll when transitioning to a NEW stave system line
+  const firstMIdx = phraseMeasures[0].m_idx;
+  let boxData = measureBBoxes[firstMIdx];
+  if (!boxData) {
+    const allElements = Array.from(svg.querySelectorAll(".abcjs-mm" + firstMIdx)).filter(el =>
+      !el.classList.contains("abcjs-staff-extra") && !el.classList.contains("abcjs-voice-name")
+    );
+    if (allElements.length > 0) {
+      let minY = Infinity;
+      allElements.forEach(el => {
+        try {
+          const b = el.getBBox();
+          if (b.height > 0 && b.y < minY) minY = b.y;
+        } catch (e) {}
+      });
+      if (minY !== Infinity) {
+        boxData = { boxY: minY };
+        measureBBoxes[firstMIdx] = boxData;
+      }
+    }
+  }
+
+  if (boxData && autoScrollEnabled) {
     const measureY = boxData.boxY;
     const isNewSystem = (lastSystemRowY === -1) || (Math.abs(measureY - lastSystemRowY) > 50);
-
     if (isNewSystem) {
       lastSystemRowY = measureY;
-      if (autoScrollEnabled) {
-        const header = document.querySelector(".top-deck");
-        const headerH = header ? header.offsetHeight : 160;
-        const svgRect = svg.getBoundingClientRect();
-        const svgTopDoc = window.scrollY + svgRect.top;
-        const scaleFactor = svg.viewBox.baseVal && svg.viewBox.baseVal.width ? (svgRect.width / svg.viewBox.baseVal.width) : 1;
-        const systemTopDoc = svgTopDoc + (boxData.boxY * scaleFactor);
-        const targetScrollY = Math.max(0, systemTopDoc - headerH - 24);
+      const header = document.querySelector(".top-deck");
+      const headerH = header ? header.offsetHeight : 150;
+      const svgRect = svg.getBoundingClientRect();
+      const svgTopDoc = window.scrollY + svgRect.top;
+      const scaleFactor = (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ? (svgRect.width / svg.viewBox.baseVal.width) : 1;
+      const systemTopDoc = svgTopDoc + (measureY * scaleFactor);
+      const targetScrollY = Math.max(0, systemTopDoc - headerH - 20);
 
-        window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-      }
+      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
     }
   }
 }
 
 // Initialize on Load
 window.addEventListener("DOMContentLoaded", () => {
-  renderPills();
+  
   renderSheet();
   updatePlayback(0);
 });

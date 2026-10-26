@@ -273,85 +273,20 @@ body {
 }
 
 /* SECTION PILLS BAR */
-.section-pills-bar {
-  padding: 6px 20px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  overflow-x: auto;
-  background: #ffffff;
-  border-top: 1px solid #f1f5f9;
-  white-space: nowrap;
-  scrollbar-width: thin;
-}
-
-.sec-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  color: #475569;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
-}
-
-.sec-pill:hover {
-  border-color: #cbd5e1;
-  background: #f1f5f9;
-  color: #0f172a;
-}
-
-.sec-pill.active {
-  background: #0f172a;
-  color: #ffffff;
-  border-color: #0f172a;
-  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.2);
-}
 
 /* LIVE KARAOKE APP LYRICS HUD SCREEN (SPOTIFY / APPLE MUSIC STYLE) */
 .live-karaoke-hud {
-  background: #090d16;
+  background: #080c14;
   color: #ffffff;
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 3px solid #f59e0b;
   display: grid;
-  grid-template-columns: 220px 1fr 300px;
-  gap: 16px;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
   align-items: center;
   transition: border-bottom-color 0.25s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.05);
-}
-
-.karaoke-side-tag {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.karaoke-side-tag .hud-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.76rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 6px;
-  white-space: nowrap;
-  width: fit-content;
-}
-
-.hud-measure-tag {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #94a3b8;
-  letter-spacing: 0.02em;
-  font-variant-numeric: tabular-nums;
 }
 
 .karaoke-screen {
@@ -452,10 +387,10 @@ body {
 
 /* SHEET MUSIC PAPER AREA - PURE CLEAN WHITE */
 .sheet-wrapper {
-  max-width: 98vw;
-  width: 98%;
-  margin: 6px auto 50px auto;
-  padding: 0 8px;
+  max-width: 1140px;
+  width: 100%;
+  margin: 18px auto 60px auto;
+  padding: 0 16px;
   background: #ffffff;
 }
 
@@ -486,7 +421,6 @@ body {
   margin: 0 auto;
   cursor: pointer;
   background: #ffffff;
-  width: 100% !important;
   max-width: 100% !important;
   height: auto !important;
 }
@@ -623,7 +557,6 @@ body {
   filter: drop-shadow(0 0 3px rgba(217, 119, 6, 0.5));
 }
 
-
 /* HIGH-CONTRAST APP-STYLE KARAOKE LYRIC TEXT HIGHLIGHTS */
 text.abcjs-lyric.live-soprano, .live-soprano text.abcjs-lyric {
   fill: #e11d48 !important;
@@ -655,7 +588,7 @@ text.abcjs-lyric.live-trio, .live-trio text.abcjs-lyric {
   .top-deck { display: none !important; }
   body { background: #ffffff !important; }
   .sheet-wrapper { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-  .sheet-paper-card { padding: 0 !important; }
+  .sheet-paper-card { padding: 0 !important; box-shadow: none !important; border: none !important; }
 }
 
 /* RESPONSIVE */
@@ -663,7 +596,6 @@ text.abcjs-lyric.live-trio, .live-trio text.abcjs-lyric {
   .deck-header { padding: 6px 12px; }
   .controls-row { padding: 6px 12px; }
   .live-karaoke-hud { grid-template-columns: 1fr; gap: 8px; padding: 8px 12px; }
-  .karaoke-side-tag { flex-direction: row; justify-content: space-between; align-items: center; }
   .karaoke-voice-split { display: none; }
 }
 
@@ -721,40 +653,6 @@ text.abcjs-lyric.live-trio, .live-trio text.abcjs-lyric {
   ry: 8;
   animation: measurePulse 0.4s ease-out;
   transition: all 0.12s ease-out;
-}
-
-/* ENHANCED LIVE KARAOKE HUD SCREEN */
-.live-karaoke-hud {
-  background: #080c14;
-  color: #ffffff;
-  padding: 10px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 3px solid #f59e0b;
-  display: grid;
-  grid-template-columns: 240px 1fr 340px;
-  gap: 16px;
-  align-items: center;
-  transition: border-bottom-color 0.25s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.05);
-}
-
-.karaoke-side-tag .hud-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.95rem;
-  font-weight: 800;
-  padding: 5px 12px;
-  border-radius: 8px;
-  white-space: nowrap;
-  width: fit-content;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.hud-measure-tag {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  font-weight: 700;
-  margin-top: 2px;
 }
 
 .line-active {
