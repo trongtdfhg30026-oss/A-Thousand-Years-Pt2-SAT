@@ -493,8 +493,9 @@ body {
   background: #090d16;
   height: 100%;
   overflow-y: auto;
+  overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 24px 32px;
+  padding: 16px 20px;
   position: relative;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
@@ -502,6 +503,7 @@ body {
 
 .sheet-column::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 .sheet-column::-webkit-scrollbar-thumb {
@@ -511,15 +513,20 @@ body {
 
 .sheet-paper-container {
   width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   background: #ffffff;
   color: #1e293b;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  padding: 24px 20px 60px;
+  padding: 20px 20px 50px;
   min-height: 100%;
   transition: width 0.15s ease-out;
   box-sizing: border-box;
+}
+
+#sheet-paper {
+  width: 100%;
 }
 
 #sheet-paper svg {

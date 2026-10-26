@@ -18,6 +18,11 @@ let animFrameId = null;
 let currentActiveLyricId = -1;
 let currentAudioSource = "vocal"; // "vocal" | "instrumental"
 
+// Anti-jump & Playback Guards
+let isManualSeeking = false;
+let lastValidPlaybackTime = 0;
+let seekTimeoutId = null;
+
 // Virtual Clock Fallback (guarantees sheet and lyrics NEVER freeze)
 let useVirtualClock = false;
 let virtualStartTime = 0;
@@ -27,7 +32,17 @@ function getPlaybackTime() {
     const elapsed = (performance.now() - virtualStartTime) / 1000;
     return Math.min(songDuration, Math.max(0, elapsed));
   }
-  return audio.currentTime || 0;
+  const t = audio.currentTime;
+  if (typeof t === "number" && !isNaN(t)) {
+    // If audio is playing and we are past the intro (e.g. lastValidTime > 5.0),
+    // and t suddenly drops to 0 without a manual seek, ignore this momentary glitch!
+    if (isPlaying && !isManualSeeking && lastValidPlaybackTime > 5.0 && t < 1.0) {
+      return lastValidPlaybackTime;
+    }
+    lastValidPlaybackTime = t;
+    return t;
+  }
+  return lastValidPlaybackTime || 0;
 }
 
 // Build and Render the Vertical Lyrics Stream
@@ -77,6 +92,7 @@ function switchAudioMode(mode) {
   const curTime = getPlaybackTime();
   const wasPlaying = isPlaying;
 
+  isManualSeeking = true;
   currentAudioSource = mode;
   let src = "vocal.mp3";
   if (mode === "instrumental") {
@@ -94,6 +110,9 @@ function switchAudioMode(mode) {
   if (wasPlaying) {
     playAudio();
   }
+  setTimeout(() => {
+    isManualSeeking = false;
+  }, 350);
 }
 
 // Audio Transport Controls
@@ -151,15 +170,98 @@ function toggleAutoScroll() {
 function applyPaperZoom() {
   const container = document.querySelector(".sheet-paper-container");
   if (!container || !sheetColumn) return;
-  const baseW = Math.max(760, sheetColumn.clientWidth - 56);
-  container.style.maxWidth = "none";
-  container.style.width = Math.round(baseW * currentScale) + "px";
+  if (currentScale === 1.0) {
+    container.style.width = "100%";
+    container.style.maxWidth = "100%";
+  } else {
+    const baseW = Math.max(760, sheetColumn.clientWidth - 48);
+    container.style.maxWidth = "none";
+    container.style.width = Math.round(baseW * currentScale) + "px";
+  }
 }
 
 // Clean staff from chords and instrument annotations
 function cleanStaffABC(s) {
   if (!s) return "";
-  return s.replace(/\"[^\"]*\"/g, "").replace(/\s+/g, " ").trim();
+  return s.replace(/"[^"]*"/g, "").replace(/\s+/g, " ").trim();
+}
+
+function splitMeasures(str) {
+  if (!str) return [];
+  const parts = str.split("|").map(s => s.trim());
+  if (parts.length > 0 && parts[parts.length - 1] === "") {
+    parts.pop();
+  }
+  return parts;
+}
+
+// Splits sections into evenly balanced 3-4 measure SAT systems that fill staff width
+function formatSectionToSystems(sec) {
+  const sopBars = splitMeasures(cleanStaffABC(sec.sop));
+  const altBars = splitMeasures(cleanStaffABC(sec.alt));
+  const tenBars = splitMeasures(cleanStaffABC(sec.ten));
+
+  const sopW = splitMeasures(sec.sop_w);
+  const altW = splitMeasures(sec.alt_w);
+  const tenW = splitMeasures(sec.ten_w);
+
+  const numBars = Math.max(sopBars.length, altBars.length, tenBars.length);
+  if (numBars === 0) return "";
+
+  const systemSizes = [];
+  let rem = numBars;
+  while (rem > 0) {
+    if (rem === 6) {
+      systemSizes.push(3);
+      systemSizes.push(3);
+      break;
+    } else if (rem === 5) {
+      systemSizes.push(3);
+      systemSizes.push(2);
+      break;
+    } else if (rem <= 4) {
+      systemSizes.push(rem);
+      break;
+    } else {
+      systemSizes.push(4);
+      rem -= 4;
+    }
+  }
+
+  let out = "% --- " + sec.title + " ---\n";
+  let barOffset = 0;
+
+  systemSizes.forEach((size) => {
+    const endOffset = barOffset + size;
+
+    // Soprano
+    const sBars = sopBars.slice(barOffset, endOffset).join(" | ") + " |";
+    out += "[V:Soprano] " + sBars + "\n";
+    if (sopW.length > 0) {
+      const sWords = sopW.slice(barOffset, endOffset).map(w => w || " ").join(" | ") + " |";
+      out += "w: " + sWords + "\n";
+    }
+
+    // Alto
+    const aBars = altBars.slice(barOffset, endOffset).join(" | ") + " |";
+    out += "[V:Alto] " + aBars + "\n";
+    if (altW.length > 0) {
+      const aWords = altW.slice(barOffset, endOffset).map(w => w || " ").join(" | ") + " |";
+      out += "w: " + aWords + "\n";
+    }
+
+    // Tenor
+    const tBars = tenBars.slice(barOffset, endOffset).join(" | ") + " |";
+    out += "[V:Tenor] " + tBars + "\n";
+    if (tenW.length > 0) {
+      const tWords = tenW.slice(barOffset, endOffset).map(w => w || " ").join(" | ") + " |";
+      out += "w: " + tWords + "\n";
+    }
+
+    barOffset = endOffset;
+  });
+
+  return out;
 }
 
 // Full Score ABC Rendering with 3-Stave SAT Voicing
@@ -174,36 +276,32 @@ function renderSheet() {
   abc += "L:1/8\n";
   abc += "Q:3/8=50\n";
   abc += "K:Bb\n";
-  abc += "%%barsperstaff 4\n";
-  abc += "%%score (Soprano) (Alto) (Tenor)\n";
-  abc += "%%staves [Soprano Alto Tenor]\n";
-  abc += "%%maxshrink 0.8\n";
+  abc += "%%score [ Soprano | Alto | Tenor ]\n";
+  abc += "%%stretchlast 1\n";
   abc += "%%measurenb 1\n";
 
-  abc += 'V:Soprano name="N1 (Cao)" sname="N1" clef=treble\n';
-  abc += 'V:Alto name="N2 (Trầm)" sname="N2" clef=treble\n';
-  abc += 'V:Tenor name="Nam (Cao)" sname="Nam" clef=treble-8\n';
+  abc += 'V:Soprano name="N1 (Cao)" snm="N1" clef=treble\n';
+  abc += 'V:Alto    name="N2 (Trầm)" snm="N2" clef=treble\n';
+  abc += 'V:Tenor   name="Nam (Cao)"  snm="Nam" clef=treble-8\n';
 
   sectionsData.forEach(sec => {
-    abc += "% --- " + sec.title + " ---\n";
-    abc += "[V:Soprano] " + cleanStaffABC(sec.sop) + "\n";
-    if (sec.sop_w) abc += "w: " + sec.sop_w + "\n";
-    abc += "[V:Alto] " + cleanStaffABC(sec.alt) + "\n";
-    if (sec.alt_w) abc += "w: " + sec.alt_w + "\n";
-    abc += "[V:Tenor] " + cleanStaffABC(sec.ten) + "\n";
-    if (sec.ten_w) abc += "w: " + sec.ten_w + "\n";
+    abc += formatSectionToSystems(sec);
   });
+
+  const container = document.querySelector(".sheet-paper-container");
+  const availW = container ? container.clientWidth - 40 : 880;
+  const staffW = Math.max(760, availW);
 
   target.innerHTML = "";
   try {
     ABCJS.renderAbc(target, abc, {
       responsive: "resize",
       add_classes: true,
-      staffwidth: 900,
+      staffwidth: staffW,
       paddingtop: 15,
       paddingbottom: 30,
-      paddingleft: 15,
-      paddingright: 15
+      paddingleft: 10,
+      paddingright: 10
     });
   } catch (e) {
     console.error("ABCJS rendering error:", e);
@@ -235,11 +333,19 @@ function renderSheet() {
 // Seek & Time Functions
 function seekToTime(t) {
   t = Math.max(0, Math.min(songDuration, t));
-  audio.currentTime = t;
+  isManualSeeking = true;
+  lastValidPlaybackTime = t;
+  try {
+    audio.currentTime = t;
+  } catch (e) {}
   if (useVirtualClock) {
     virtualStartTime = performance.now() - t * 1000;
   }
   updatePlayback(t);
+  clearTimeout(seekTimeoutId);
+  seekTimeoutId = setTimeout(() => {
+    isManualSeeking = false;
+  }, 300);
 }
 
 function handleSeekClick(e) {
@@ -305,13 +411,23 @@ function updatePlayback(curT) {
     progressBar.style.width = pct + "%";
   }
 
-  // Smoothly identify Active Lyric Line without resetting to 0 during phrase gaps
-  let activeLyric = lyricsList[0];
+  // Find active lyric line by checking timestamps
+  let activeLyric = null;
   for (let i = lyricsList.length - 1; i >= 0; i--) {
     if (curT >= lyricsList[i].startT) {
       activeLyric = lyricsList[i];
       break;
     }
+  }
+
+  if (!activeLyric) {
+    activeLyric = lyricsList[0];
+  }
+
+  // Anti-jump guard:
+  // If audio is playing and we are past the intro, never jump back to Intro (id 0) during playback!
+  if (isPlaying && currentActiveLyricId > 0 && activeLyric.id === 0 && !isManualSeeking && curT > 2.0) {
+    activeLyric = lyricsList[currentActiveLyricId];
   }
 
   // Update Vertical Lyrics Stream
@@ -397,6 +513,17 @@ function highlightSentence(lyricItem) {
   }
 }
 
+// Audio Event Listeners for Seek & Buffer State
+if (audio) {
+  audio.addEventListener("seeked", () => {
+    isManualSeeking = false;
+    updatePlayback(getPlaybackTime());
+  });
+  audio.addEventListener("seeking", () => {
+    isManualSeeking = true;
+  });
+}
+
 // Initialize on Load
 window.addEventListener("DOMContentLoaded", () => {
   renderLyricsStream();
@@ -404,6 +531,11 @@ window.addEventListener("DOMContentLoaded", () => {
   updatePlayback(0);
 });
 
+let resizeTimer = null;
 window.addEventListener("resize", () => {
-  applyPaperZoom();
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    applyPaperZoom();
+    renderSheet();
+  }, 150);
 });
