@@ -1,4 +1,4 @@
-// Audio & Score Synchronization Controller (SAT 3-Stave High-Performance Engine)
+// Master Audio & Score Synchronization Controller (SAT 3-Stave Engine)
 
 const audio = document.getElementById("audio-player");
 const playBtn = document.getElementById("btn-play");
@@ -16,23 +16,11 @@ let autoScrollEnabled = false;
 let currentScale = 1.0;
 let animFrameId = null;
 let currentActiveLyricId = -1;
-let lastSystemRowY = -1;
 let currentAudioSource = "vocal"; // "vocal" | "instrumental"
 
 // Virtual Clock Fallback (guarantees sheet and lyrics NEVER freeze)
 let useVirtualClock = false;
 let virtualStartTime = 0;
-
-// Singer Colors Map
-const roleColors = {
-  soprano: "#f43f5e",
-  alto: "#a855f7",
-  tenor: "#0ea5e9",
-  trio: "#f59e0b",
-  duet: "#f59e0b",
-  climax: "#ef4444",
-  intro: "#64748b"
-};
 
 function getPlaybackTime() {
   if (useVirtualClock) {
@@ -47,7 +35,7 @@ function renderLyricsStream() {
   if (!lyricsStreamContainer) return;
   lyricsStreamContainer.innerHTML = "";
 
-  lyricsList.forEach((item, idx) => {
+  lyricsList.forEach((item) => {
     const div = document.createElement("div");
     div.className = "lyric-item";
     div.id = "lyric-item-" + item.id;
@@ -159,17 +147,34 @@ function toggleAutoScroll() {
   }
 }
 
+// Dynamically scale sheet paper container width based on zoom level
+function applyPaperZoom() {
+  const container = document.querySelector(".sheet-paper-container");
+  if (!container || !sheetColumn) return;
+  const baseW = Math.max(760, sheetColumn.clientWidth - 56);
+  container.style.maxWidth = "none";
+  container.style.width = Math.round(baseW * currentScale) + "px";
+}
+
+// Clean staff from chords and instrument annotations
+function cleanStaffABC(s) {
+  if (!s) return "";
+  return s.replace(/\"[^\"]*\"/g, "").replace(/\s+/g, " ").trim();
+}
+
 // Full Score ABC Rendering with 3-Stave SAT Voicing
 function renderSheet() {
   const target = document.getElementById("sheet-paper");
   if (!target) return;
+
+  applyPaperZoom();
 
   let abc = "X:1\n";
   abc += "M:6/8\n";
   abc += "L:1/8\n";
   abc += "Q:3/8=50\n";
   abc += "K:Bb\n";
-  abc += "%%scale " + currentScale.toFixed(2) + "\n";
+  abc += "%%barsperstaff 4\n";
   abc += "%%score (Soprano) (Alto) (Tenor)\n";
   abc += "%%staves [Soprano Alto Tenor]\n";
   abc += "%%maxshrink 0.8\n";
@@ -180,12 +185,12 @@ function renderSheet() {
   abc += 'V:Tenor name="Nam (Cao)" sname="Nam" clef=treble-8\n';
 
   sectionsData.forEach(sec => {
-    abc += "% --- " + sec.title + " (" + sec.singer + ") ---\n";
-    abc += "[V:Soprano] " + sec.sop + "\n";
+    abc += "% --- " + sec.title + " ---\n";
+    abc += "[V:Soprano] " + cleanStaffABC(sec.sop) + "\n";
     if (sec.sop_w) abc += "w: " + sec.sop_w + "\n";
-    abc += "[V:Alto] " + sec.alt + "\n";
+    abc += "[V:Alto] " + cleanStaffABC(sec.alt) + "\n";
     if (sec.alt_w) abc += "w: " + sec.alt_w + "\n";
-    abc += "[V:Tenor] " + sec.ten + "\n";
+    abc += "[V:Tenor] " + cleanStaffABC(sec.ten) + "\n";
     if (sec.ten_w) abc += "w: " + sec.ten_w + "\n";
   });
 
@@ -194,8 +199,7 @@ function renderSheet() {
     ABCJS.renderAbc(target, abc, {
       responsive: "resize",
       add_classes: true,
-      scale: currentScale,
-      staffwidth: 980,
+      staffwidth: 900,
       paddingtop: 15,
       paddingbottom: 30,
       paddingleft: 15,
@@ -204,8 +208,6 @@ function renderSheet() {
   } catch (e) {
     console.error("ABCJS rendering error:", e);
   }
-
-  lastSystemRowY = -1;
 
   // Add click-to-seek functionality on measures in sheet
   setTimeout(() => {
@@ -222,7 +224,12 @@ function renderSheet() {
         });
       });
     });
-  }, 250);
+
+    // Re-apply highlight if an item is active
+    if (currentActiveLyricId >= 0 && currentActiveLyricId < lyricsList.length) {
+      highlightSentence(lyricsList[currentActiveLyricId]);
+    }
+  }, 200);
 }
 
 // Seek & Time Functions
@@ -250,10 +257,11 @@ function seekRelative(delta) {
 }
 
 function changeZoom(delta) {
-  currentScale = Math.max(0.6, Math.min(1.8, currentScale + delta));
+  currentScale = Math.max(0.6, Math.min(1.8, Math.round((currentScale + delta) * 10) / 10));
   if (zoomText) {
     zoomText.textContent = Math.round(currentScale * 100) + "%";
   }
+  applyPaperZoom();
   renderSheet();
 }
 
@@ -267,7 +275,6 @@ function formatTime(s) {
 // High-Precision Animation Loop (60 FPS)
 function startAnimation() {
   if (animFrameId) cancelAnimationFrame(animFrameId);
-
   function loop() {
     if (isPlaying) {
       updatePlayback(getPlaybackTime());
@@ -298,15 +305,12 @@ function updatePlayback(curT) {
     progressBar.style.width = pct + "%";
   }
 
-  // Identify Active Lyric Line
+  // Smoothly identify Active Lyric Line without resetting to 0 during phrase gaps
   let activeLyric = lyricsList[0];
-  for (let i = 0; i < lyricsList.length; i++) {
-    if (curT >= lyricsList[i].startT && curT < lyricsList[i].endT) {
+  for (let i = lyricsList.length - 1; i >= 0; i--) {
+    if (curT >= lyricsList[i].startT) {
       activeLyric = lyricsList[i];
       break;
-    }
-    if (curT >= lyricsList[lyricsList.length - 1].startT) {
-      activeLyric = lyricsList[lyricsList.length - 1];
     }
   }
 
@@ -401,5 +405,5 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("resize", () => {
-  renderSheet();
+  applyPaperZoom();
 });
