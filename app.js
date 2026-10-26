@@ -1,43 +1,36 @@
 // Audio & Score Synchronization Controller (SAT 3-Stave High-Performance Engine)
 
 const audio = document.getElementById("audio-player");
-const audioInput = document.getElementById("audio-file-input");
-const audioStatus = document.getElementById("audio-status");
 const playBtn = document.getElementById("btn-play");
 const playIcon = document.getElementById("play-icon");
 const playText = document.getElementById("play-text");
 const progressBar = document.getElementById("progress-bar");
 const timeDisplay = document.getElementById("time-display");
 const zoomText = document.getElementById("zoom-text");
-
 const autoScrollBtn = document.getElementById("btn-autoscroll");
+const lyricsStreamContainer = document.getElementById("lyrics-stream");
+const sheetColumn = document.getElementById("sheet-column-panel");
 
 let isPlaying = false;
-let isLooping = false;
 let autoScrollEnabled = false;
 let currentScale = 1.0;
 let animFrameId = null;
-let activeSec = null;
-let currentM = -1;
+let currentActiveLyricId = -1;
 let lastSystemRowY = -1;
-let currentAudioSource = "vocal"; // "vocal" | "instrumental" | "video"
+let currentAudioSource = "vocal"; // "vocal" | "instrumental"
 
 // Virtual Clock Fallback (guarantees sheet and lyrics NEVER freeze)
 let useVirtualClock = false;
 let virtualStartTime = 0;
-// songDuration defined in data.js (300.00s)
-
-// Cached Bounding Boxes for all measures (avoids layout thrashing / lag)
-let measureBBoxes = {};
 
 // Singer Colors Map
 const roleColors = {
-  soprano: "#e11d48",
-  alto: "#7c3aed",
-  tenor: "#0284c7",
-  trio: "#d97706",
-  duet: "#d97706",
-  climax: "#b91c1c",
+  soprano: "#f43f5e",
+  alto: "#a855f7",
+  tenor: "#0ea5e9",
+  trio: "#f59e0b",
+  duet: "#f59e0b",
+  climax: "#ef4444",
   intro: "#64748b"
 };
 
@@ -49,128 +42,73 @@ function getPlaybackTime() {
   return audio.currentTime || 0;
 }
 
-function updateAudioStatus(text, statusClass) {
-  if (!audioStatus) return;
-  audioStatus.textContent = text;
-  audioStatus.className = "audio-status-badge status-" + statusClass;
-}
+// Build and Render the Vertical Lyrics Stream
+function renderLyricsStream() {
+  if (!lyricsStreamContainer) return;
+  lyricsStreamContainer.innerHTML = "";
 
-// Switch Audio Mode seamlessly between Vocal, Beat (Instrumental), and Original Video
-function switchAudioMode(mode) {
-  if (currentAudioSource === mode && audio.src && audio.src.indexOf(mode) !== -1) return;
-  const curT = getPlaybackTime();
-  const wasPlaying = isPlaying;
-  currentAudioSource = mode;
+  lyricsList.forEach((item, idx) => {
+    const div = document.createElement("div");
+    div.className = "lyric-item";
+    div.id = "lyric-item-" + item.id;
+    div.setAttribute("data-role", item.role);
 
-  let src = "vocal.mp3";
-  let label = "🎤 Có lời";
-  if (mode === "instrumental") {
-    src = "instrumental.mp3";
-    label = "🎵 Beat";
-  } else if (mode === "video") {
-    src = "lyrics_video.mp4";
-    label = "🎬 Video";
-  }
+    const metaRow = document.createElement("div");
+    metaRow.className = "lyric-meta-row";
 
-  // Update mode buttons UI
-  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
-  const btnId = mode === "instrumental" ? "btn-mode-inst" : ("btn-mode-" + mode);
-  const activeBtn = document.getElementById(btnId);
-  if (activeBtn) activeBtn.classList.add("active");
+    const pill = document.createElement("span");
+    pill.className = "singer-pill";
+    pill.textContent = item.singer;
 
-  const btnAudioSrc = document.getElementById("btn-audio-src");
-  if (btnAudioSrc) btnAudioSrc.textContent = label;
+    const timeBadge = document.createElement("span");
+    timeBadge.className = "lyric-time-badge";
+    timeBadge.textContent = formatTime(item.startT);
 
-  updateAudioStatus(label + ": Đang nạp...", "checking");
-  audio.src = src;
-  audio.load();
-  audio.currentTime = curT;
+    metaRow.appendChild(pill);
+    metaRow.appendChild(timeBadge);
 
-  if (wasPlaying) {
-    audio.play().then(() => {
-      isPlaying = true;
-      startAnimation();
-      updateAudioStatus(label + " Sẵn sàng (300s)", "ready");
-    }).catch(err => {
-      console.warn("Autoplay after switch:", err);
+    const textDiv = document.createElement("div");
+    textDiv.className = "lyric-text";
+    textDiv.textContent = item.text;
+
+    div.appendChild(metaRow);
+    div.appendChild(textDiv);
+
+    div.addEventListener("click", () => {
+      seekToTime(item.startT);
+      if (!isPlaying) playAudio();
     });
-  } else {
-    updateAudioStatus(label + " Sẵn sàng (300s)", "ready");
-  }
-}
 
-// Toggle Audio Source (cycles through 3 modes)
-function toggleAudioSource() {
-  if (currentAudioSource === "vocal") switchAudioMode("instrumental");
-  else if (currentAudioSource === "instrumental") switchAudioMode("video");
-  else switchAudioMode("vocal");
-}
-
-// Toggle Auto-Scroll
-function toggleAutoScroll() {
-  autoScrollEnabled = !autoScrollEnabled;
-  if (autoScrollBtn) {
-    autoScrollBtn.textContent = autoScrollEnabled ? "📜 Cuộn: Bật" : "📜 Cuộn: Tắt";
-    autoScrollBtn.classList.toggle("btn-active", autoScrollEnabled);
-  }
-}
-
-// Audio Element Listeners
-audio.addEventListener("loadedmetadata", () => {
-  const label = currentAudioSource === "vocal" ? "🎤 Có Lời" : (currentAudioSource === "instrumental" ? "🎵 Beat" : "🎬 Video");
-  updateAudioStatus(label + " Sẵn sàng (" + Math.round(audio.duration || songDuration) + "s)", "ready");
-});
-
-audio.addEventListener("canplaythrough", () => {
-  const label = currentAudioSource === "vocal" ? "🎤 Có Lời" : (currentAudioSource === "instrumental" ? "🎵 Beat" : "🎬 Video");
-  updateAudioStatus(label + " Sẵn sàng (" + Math.round(audio.duration || songDuration) + "s)", "ready");
-});
-
-audio.addEventListener("error", () => {
-  console.warn("Audio file error or restricted. Fallback virtual clock will be used when played.", audio.error);
-  updateAudioStatus("⏱ Mô phỏng nhịp (Bấm Chọn MP3 để nạp)", "fallback");
-});
-
-audio.addEventListener("play", () => {
-  isPlaying = true;
-  useVirtualClock = false;
-  playIcon.textContent = "⏸";
-  playText.textContent = "Tạm dừng";
-  startAnimation();
-});
-
-audio.addEventListener("pause", () => {
-  if (!useVirtualClock) {
-    isPlaying = false;
-    playIcon.textContent = "▶";
-    playText.textContent = "Phát";
-    cancelAnimationFrame(animFrameId);
-  }
-});
-
-audio.addEventListener("ended", () => {
-  isPlaying = false;
-  useVirtualClock = false;
-  playIcon.textContent = "▶";
-  playText.textContent = "Phát lại";
-  cancelAnimationFrame(animFrameId);
-});
-
-// User Upload Audio File Fallback
-if (audioInput) {
-  audioInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      audio.src = url;
-      audio.load();
-      updateAudioStatus("🎵 File người dùng: " + file.name, "ready");
-      playAudio();
-    }
+    lyricsStreamContainer.appendChild(div);
   });
 }
 
-// Transport Controls
+// Switch Audio Mode seamlessly between Vocal and Instrumental Beat
+function switchAudioMode(mode) {
+  if (currentAudioSource === mode) return;
+  const curTime = getPlaybackTime();
+  const wasPlaying = isPlaying;
+
+  currentAudioSource = mode;
+  let src = "vocal.mp3";
+  if (mode === "instrumental") {
+    src = "instrumental.mp3";
+  }
+
+  audio.src = src;
+  audio.currentTime = curTime;
+
+  document.querySelectorAll(".audio-switcher .mode-btn").forEach(btn => btn.classList.remove("active"));
+  const btnId = mode === "instrumental" ? "btn-mode-inst" : "btn-mode-vocal";
+  const activeBtn = document.getElementById(btnId);
+  if (activeBtn) activeBtn.classList.add("active");
+
+  if (wasPlaying) {
+    playAudio();
+  }
+}
+
+// Audio Transport Controls
 function togglePlay() {
   if (isPlaying) {
     pauseAudio();
@@ -180,26 +118,25 @@ function togglePlay() {
 }
 
 function playAudio() {
-  const p = audio.play();
-  if (p !== undefined) {
-    p.then(() => {
-      isPlaying = true;
-      useVirtualClock = false;
-      playIcon.textContent = "⏸";
-      playText.textContent = "Tạm dừng";
-      startAnimation();
-      const label = currentAudioSource === "vocal" ? "🎤 Có Lời" : (currentAudioSource === "instrumental" ? "🎵 Beat" : "🎬 Video");
-      updateAudioStatus(label + " Đang phát", "ready");
-    }).catch(err => {
-      console.warn("Direct HTML5 audio play blocked/missing, engaging virtual clock:", err);
-      useVirtualClock = true;
-      virtualStartTime = performance.now() - (audio.currentTime || 0) * 1000;
-      isPlaying = true;
-      playIcon.textContent = "⏸";
-      playText.textContent = "Tạm dừng";
-      startAnimation();
-      updateAudioStatus("⏱ Đang chạy mô phỏng nhịp chuẩn", "fallback");
-    });
+  useVirtualClock = false;
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        isPlaying = true;
+        playIcon.textContent = "⏸";
+        playText.textContent = "Tạm dừng";
+        startAnimation();
+      })
+      .catch(err => {
+        console.warn("Audio play prevented, fallback to virtual clock:", err);
+        useVirtualClock = true;
+        virtualStartTime = performance.now() - (audio.currentTime || 0) * 1000;
+        isPlaying = true;
+        playIcon.textContent = "⏸";
+        playText.textContent = "Tạm dừng";
+        startAnimation();
+      });
   }
 }
 
@@ -211,20 +148,16 @@ function pauseAudio() {
   }
   playIcon.textContent = "▶";
   playText.textContent = "Phát";
-  cancelAnimationFrame(animFrameId);
-  updateAudioStatus("⏸ Tạm dừng", "ready");
+  if (animFrameId) cancelAnimationFrame(animFrameId);
 }
 
-function toggleLoop() {
-  isLooping = !isLooping;
-  if (loopBtn) {
-    loopBtn.classList.toggle("btn-active", isLooping);
-    loopBtn.textContent = isLooping ? "🔁 Đang Lặp Đoạn" : "🔁 Lặp Đoạn";
+function toggleAutoScroll() {
+  autoScrollEnabled = !autoScrollEnabled;
+  if (autoScrollBtn) {
+    autoScrollBtn.classList.toggle("active", autoScrollEnabled);
+    autoScrollBtn.textContent = autoScrollEnabled ? "📜 Cuộn: Bật" : "📜 Cuộn: Tắt";
   }
 }
-
-// Navigation Pills
-
 
 // Full Score ABC Rendering with 3-Stave SAT Voicing
 function renderSheet() {
@@ -232,7 +165,7 @@ function renderSheet() {
   if (!target) return;
 
   let abc = "X:1\n";
-abc += "M:6/8\n";
+  abc += "M:6/8\n";
   abc += "L:1/8\n";
   abc += "Q:3/8=50\n";
   abc += "K:Bb\n";
@@ -242,9 +175,9 @@ abc += "M:6/8\n";
   abc += "%%maxshrink 0.8\n";
   abc += "%%measurenb 1\n";
 
-  abc += "V:Soprano name=\"N1 (Cao)\" sname=\"N1\" clef=treble\n";
-  abc += "V:Alto name=\"N2 (Trầm)\" sname=\"N2\" clef=treble\n";
-  abc += "V:Tenor name=\"Nam (Cao)\" sname=\"Nam\" clef=treble-8\n";
+  abc += 'V:Soprano name="N1 (Cao)" sname="N1" clef=treble\n';
+  abc += 'V:Alto name="N2 (Trầm)" sname="N2" clef=treble\n';
+  abc += 'V:Tenor name="Nam (Cao)" sname="Nam" clef=treble-8\n';
 
   sectionsData.forEach(sec => {
     abc += "% --- " + sec.title + " (" + sec.singer + ") ---\n";
@@ -262,19 +195,16 @@ abc += "M:6/8\n";
       responsive: "resize",
       add_classes: true,
       scale: currentScale,
-      staffwidth: 1060,
+      staffwidth: 980,
       paddingtop: 15,
       paddingbottom: 30,
-      paddingleft: 20,
-      paddingright: 20
+      paddingleft: 15,
+      paddingright: 15
     });
   } catch (e) {
     console.error("ABCJS rendering error:", e);
   }
 
-  // Invalidate cached measure boxes on re-render
-  measureBBoxes = {};
-  currentM = -1;
   lastSystemRowY = -1;
 
   // Add click-to-seek functionality on measures in sheet
@@ -287,12 +217,12 @@ abc += "M:6/8\n";
       elems.forEach(el => {
         el.style.cursor = "pointer";
         el.addEventListener("click", () => {
-          seekToTime(measuresData[mIdx].startT);
+          seekToTime(m.startT);
           if (!isPlaying) playAudio();
         });
       });
     });
-  }, 300);
+  }, 250);
 }
 
 // Seek & Time Functions
@@ -355,229 +285,117 @@ function updatePlayback(curT) {
     isPlaying = false;
     useVirtualClock = false;
     playIcon.textContent = "▶";
-    playText.textContent = "Phát lại";
+    playText.textContent = "Phát";
     cancelAnimationFrame(animFrameId);
     curT = songDuration;
   }
 
-  timeDisplay.textContent = formatTime(curT) + " / " + formatTime(dur);
-  const pct = Math.min(100, Math.max(0, (curT / dur) * 100));
-  progressBar.style.width = pct + "%";
+  if (timeDisplay) {
+    timeDisplay.textContent = formatTime(curT) + " / " + formatTime(dur);
+  }
+  if (progressBar) {
+    const pct = Math.min(100, Math.max(0, (curT / dur) * 100));
+    progressBar.style.width = pct + "%";
+  }
 
-  // Identify Current Section
-  let curSec = sectionsData[0];
-  for (let i = 0; i < sectionsData.length; i++) {
-    if (curT >= sectionsData[i].startT) {
-      curSec = sectionsData[i];
-    } else {
+  // Identify Active Lyric Line
+  let activeLyric = lyricsList[0];
+  for (let i = 0; i < lyricsList.length; i++) {
+    if (curT >= lyricsList[i].startT && curT < lyricsList[i].endT) {
+      activeLyric = lyricsList[i];
       break;
     }
-  }
-
-  // Section Looping
-  if (isLooping && curSec && curT >= curSec.endT) {
-    seekToTime(curSec.startT);
-    return;
-  }
-
-  
-
-  // Identify Current Measure
-  let curMIdx = 0;
-  for (let i = 0; i < measuresData.length; i++) {
-    if (curT >= measuresData[i].startT && curT < measuresData[i].endT) {
-      curMIdx = i;
-      break;
-    }
-    if (curT >= measuresData[measuresData.length - 1].startT) {
-      curMIdx = measuresData.length - 1;
+    if (curT >= lyricsList[lyricsList.length - 1].startT) {
+      activeLyric = lyricsList[lyricsList.length - 1];
     }
   }
 
-  const curMeasure = measuresData[curMIdx];
-  highlightPhrase(curMeasure.card_idx, curMeasure.role);
+  // Update Vertical Lyrics Stream
+  if (activeLyric && activeLyric.id !== currentActiveLyricId) {
+    currentActiveLyricId = activeLyric.id;
 
-  // HUD Synchronized directly to active measure & lyrics
-  const hudBadge = document.getElementById("hud-badge");
-  const hudMTag = document.getElementById("hud-m-tag");
-  const hudPrev = document.getElementById("hud-prev");
-  const hudLyric = document.getElementById("hud-lyric");
-  const hudNext = document.getElementById("hud-next");
-  const hudDeck = document.getElementById("live-hud");
-  const splitSop = document.getElementById("split-sop");
-  const splitAlt = document.getElementById("split-alt");
-  const splitTen = document.getElementById("split-ten");
+    // Update active class in lyrics stream
+    const items = document.querySelectorAll(".lyric-item");
+    items.forEach(el => el.classList.remove("active"));
 
-  const voiceColor = roleColors[curMeasure.role] || "#38bdf8";
-
-  if (hudBadge) {
-    hudBadge.className = "hud-badge " + (curMeasure.badge ? curMeasure.badge.replace("badge-", "chip-") : "chip-intro");
-    hudBadge.textContent = curMeasure.singer;
-  }
-
-  if (hudMTag) {
-    hudMTag.textContent = "Ô nhịp: M" + (curMIdx + 1) + " / " + measuresData.length + " • " + (curMeasure.section_title || curSec.title);
-  }
-
-  // Active full phrase from calibrated video lyric card
-  const cIdx = curMeasure.card_idx;
-  let activeLyricText = curMeasure.text;
-  if (typeof videoLyricCards !== "undefined" && videoLyricCards[cIdx] && videoLyricCards[cIdx].text) {
-    activeLyricText = videoLyricCards[cIdx].text;
-  }
-
-  if (hudPrev) {
-    let prevTxt = "";
-    if (typeof videoLyricCards !== "undefined") {
-      for (let p = cIdx - 1; p >= 0; p--) {
-        if (videoLyricCards[p] && videoLyricCards[p].text) {
-          prevTxt = videoLyricCards[p].text;
-          break;
-        }
-      }
+    const activeEl = document.getElementById("lyric-item-" + activeLyric.id);
+    if (activeEl) {
+      activeEl.classList.add("active");
+      // Auto-center in stream container
+      activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    hudPrev.textContent = prevTxt || "";
-  }
 
-  if (hudLyric) {
-    hudLyric.textContent = activeLyricText;
-    hudLyric.style.setProperty("--voice-color", voiceColor);
-    hudLyric.style.color = voiceColor;
-    hudLyric.style.textShadow = "0 0 16px " + voiceColor + ", 0 0 32px " + voiceColor + "88";
-  }
-
-  if (hudNext) {
-    let nextTxt = "";
-    if (typeof videoLyricCards !== "undefined") {
-      for (let n = cIdx + 1; n < videoLyricCards.length; n++) {
-        if (videoLyricCards[n] && videoLyricCards[n].text) {
-          nextTxt = videoLyricCards[n].text;
-          break;
-        }
-      }
-    }
-    hudNext.textContent = nextTxt || "";
-  }
-
-  if (splitSop) {
-    const txt = curMeasure.sop_lyr || "—";
-    const isActive = !!txt && txt !== "—";
-    splitSop.innerHTML = '<span class="badge-dot dot-sop"></span> N1: <span>' + txt + '</span>';
-    splitSop.classList.toggle("active-voice", isActive);
-  }
-
-  if (splitAlt) {
-    const txt = curMeasure.alt_lyr || "—";
-    const isActive = !!txt && txt !== "—";
-    splitAlt.innerHTML = '<span class="badge-dot dot-alt"></span> N2: <span>' + txt + '</span>';
-    splitAlt.classList.toggle("active-voice", isActive);
-  }
-
-  if (splitTen) {
-    const txt = curMeasure.ten_lyr || "—";
-    const isActive = !!txt && txt !== "—";
-    splitTen.innerHTML = '<span class="badge-dot dot-ten"></span> Nam: <span>' + txt + '</span>';
-    splitTen.classList.toggle("active-voice", isActive);
-  }
-
-  if (hudDeck) {
-    hudDeck.style.borderBottomColor = voiceColor;
+    // Highlight entire sentence across measures on the sheet
+    highlightSentence(activeLyric);
   }
 }
 
-// Highlight Measure Across All 3 Staves (Soft glow on active notes & lyrics)
-let currentActiveCard = -1;
-function highlightPhrase(activeCardIdx, role) {
+// Highlight Entire Sentence on Sheet Music
+function highlightSentence(lyricItem) {
   const svg = document.querySelector("#sheet-paper svg");
   if (!svg) return;
 
-  svg.querySelectorAll(".active-playhead-line, #playhead-line, #measure-box, .active-measure-box").forEach(el => el.remove());
-
-  if (currentActiveCard === activeCardIdx) return;
-  currentActiveCard = activeCardIdx;
-
-  svg.querySelectorAll(".live-phrase-active, .live-active-item, .live-soprano, .live-alto, .live-tenor, .live-trio").forEach(el => {
-    el.classList.remove("live-phrase-active", "live-active-item", "live-soprano", "live-alto", "live-tenor", "live-trio");
+  // Clear previous live highlights
+  svg.querySelectorAll(".live-phrase-active").forEach(el => {
+    el.classList.remove(
+      "live-phrase-active",
+      "live-soprano",
+      "live-alto",
+      "live-tenor",
+      "live-trio",
+      "live-climax"
+    );
   });
 
-  if (activeCardIdx < 0) return;
+  if (!lyricItem || !lyricItem.measures || lyricItem.measures.length === 0) return;
 
-  const phraseMeasures = measuresData.filter(m => m.card_idx === activeCardIdx);
-  if (phraseMeasures.length === 0) return;
+  const roleClass =
+    lyricItem.role === "soprano"
+      ? "live-soprano"
+      : lyricItem.role === "alto"
+      ? "live-alto"
+      : lyricItem.role === "tenor"
+      ? "live-tenor"
+      : lyricItem.role === "climax"
+      ? "live-climax"
+      : "live-trio";
 
-  phraseMeasures.forEach(m => {
-    const mIdx = m.m_idx;
-    const activeElements = svg.querySelectorAll(".abcjs-mm" + mIdx);
-    activeElements.forEach(el => {
+  // Apply highlight to all measures of this sentence
+  let firstElement = null;
+  lyricItem.measures.forEach(mIdx => {
+    const measureElements = svg.querySelectorAll(".abcjs-mm" + mIdx);
+    measureElements.forEach(el => {
       if (
         el.classList.contains("abcjs-staff-extra") ||
         el.classList.contains("abcjs-clef") ||
         el.classList.contains("abcjs-key-signature") ||
-        el.classList.contains("abcjs-bar") ||
         el.classList.contains("abcjs-bar-number") ||
         el.classList.contains("abcjs-voice-name")
       ) {
         return;
       }
-
-      el.classList.add("live-phrase-active", "live-active-item");
-      if (el.classList.contains("abcjs-v0")) {
-        el.classList.add("live-soprano");
-      } else if (el.classList.contains("abcjs-v1")) {
-        el.classList.add("live-alto");
-      } else if (el.classList.contains("abcjs-v2")) {
-        el.classList.add("live-tenor");
-      } else {
-        if (role === "soprano") el.classList.add("live-soprano");
-        else if (role === "alto") el.classList.add("live-alto");
-        else if (role === "tenor") el.classList.add("live-tenor");
-        else el.classList.add("live-trio");
-      }
+      if (!firstElement) firstElement = el;
+      el.classList.add("live-phrase-active", roleClass);
     });
   });
 
-  const firstMIdx = phraseMeasures[0].m_idx;
-  let boxData = measureBBoxes[firstMIdx];
-  if (!boxData) {
-    const allElements = Array.from(svg.querySelectorAll(".abcjs-mm" + firstMIdx)).filter(el =>
-      !el.classList.contains("abcjs-staff-extra") && !el.classList.contains("abcjs-voice-name")
-    );
-    if (allElements.length > 0) {
-      let minY = Infinity;
-      allElements.forEach(el => {
-        try {
-          const b = el.getBBox();
-          if (b.height > 0 && b.y < minY) minY = b.y;
-        } catch (e) {}
-      });
-      if (minY !== Infinity) {
-        boxData = { boxY: minY };
-        measureBBoxes[firstMIdx] = boxData;
+  // Auto-scroll sheet column to active system
+  if (autoScrollEnabled && firstElement && sheetColumn) {
+    try {
+      const rect = firstElement.getBoundingClientRect();
+      const colRect = sheetColumn.getBoundingClientRect();
+      const offset = rect.top - colRect.top;
+      // Scroll if measure is outside central view
+      if (offset < 40 || offset > colRect.height - 150) {
+        sheetColumn.scrollBy({ top: offset - 100, behavior: "smooth" });
       }
-    }
-  }
-
-  if (boxData && autoScrollEnabled) {
-    const measureY = boxData.boxY;
-    const isNewSystem = (lastSystemRowY === -1) || (Math.abs(measureY - lastSystemRowY) > 50);
-    if (isNewSystem) {
-      lastSystemRowY = measureY;
-      const header = document.querySelector(".top-deck");
-      const headerH = header ? header.offsetHeight : 150;
-      const svgRect = svg.getBoundingClientRect();
-      const svgTopDoc = window.scrollY + svgRect.top;
-      const scaleFactor = (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) ? (svgRect.width / svg.viewBox.baseVal.width) : 1;
-      const systemTopDoc = svgTopDoc + (measureY * scaleFactor);
-      const targetScrollY = Math.max(0, systemTopDoc - headerH - 20);
-
-      window.scrollTo({ top: targetScrollY, behavior: "smooth" });
-    }
+    } catch (e) {}
   }
 }
 
 // Initialize on Load
 window.addEventListener("DOMContentLoaded", () => {
-  
+  renderLyricsStream();
   renderSheet();
   updatePlayback(0);
 });
