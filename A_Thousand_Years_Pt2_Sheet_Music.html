@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Thousand Years (Pt. 2) - Bản Sheet Nhạc 3 Bè</title>
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/dist/abcjs-basic-min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/abcjs-audio.css">
+<style>
+  :root {
+    --soprano: #d81b60;
+    --alto: #5e35b1;
+    --tenor: #0277bd;
+    --bg: #f8fafc;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: #1e293b;
+    margin: 0;
+    padding: 24px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 32px;
+  }
+  header {
+    text-align: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: #0f172a;
+  }
+  .meta {
+    color: #64748b;
+    font-size: 15px;
+  }
+  .roles {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .role-badge {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+  }
+  .role-soprano { background: var(--soprano); }
+  .role-alto { background: var(--alto); }
+  .role-tenor { background: var(--tenor); }
+  
+  .controls-panel {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #1d4ed8; }
+  .btn-print { background: #059669; }
+  .btn-print:hover { background: #047857; }
+  
+  #audio-player {
+    width: 100%;
+    margin-top: 12px;
+  }
+  #sheet-paper {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    padding: 10px;
+  }
+  
+  /* ABCjs coloring for voices */
+  .abcjs-v0 { fill: var(--soprano); stroke: var(--soprano); }
+  .abcjs-v1 { fill: var(--alto); stroke: var(--alto); }
+  .abcjs-v2 { fill: var(--tenor); stroke: var(--tenor); }
+  .abcjs-staff { stroke: #475569 !important; fill: none !important; }
+  .abcjs-bar { stroke: #334155 !important; }
+  
+  @media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; padding: 0; max-width: 100%; }
+    .controls-panel { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>A Thousand Years (Pt. 2) - Bản Ký Âm Sheet Nhạc 3 Bè</h1>
+    <div class="meta">Christina Perri ft. Steve Kazee | Giọng: B♭ Trưởng (2 dấu giáng) | Nhịp: 6/8 | Tempo: 50 BPM</div>
+    <div class="roles">
+      <span class="role-badge role-soprano">Nữ cao (Soprano) - Quãng Bè Cao</span>
+      <span class="role-badge role-alto">Nữ trầm (Alto) - Quãng Bè Trầm</span>
+      <span class="role-badge role-tenor">Nam cao (Tenor) - Quãng Bè Trung / Nam Chính</span>
+    </div>
+  </header>
+
+  <div class="controls-panel">
+    <div>
+      <button class="btn btn-print" onclick="window.print()">In Sheet Nhạc (Print/PDF)</button>
+    </div>
+    <div id="audio-player"></div>
+  </div>
+
+  <div id="sheet-paper"></div>
+</div>
+
+<script>
+var fullAbc = "X:1\nT:A Thousand Years (Part 2)\nC:Christina Perri ft. Steve Kazee\nM:6/8\nL:1/8\nQ:3/8=50\nK:Bb\n%%score (Soprano Alto Tenor)\nV:Soprano name=\"N\u1eef cao\" clef=treble\nV:Alto name=\"N\u1eef tr\u1ea7m\" clef=treble\nV:Tenor name=\"Nam cao\" clef=treble-8\n%\n% --- VERSE 1: PRELUDE ---\n%\n[V:Soprano] z6 | z6 | z6 | z6 |\nw:\n[V:Alto] z3 B, D F | F2 E D2 B, | C2 D B,3 | z3 B, D F |\nw: The day we met, Fro-zen I held my breath, Right from the\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n[V:Soprano] z6 | z6 | z6 | z6 |\nw:\n[V:Alto] F2 E D B, C | D2 C B,3 | z3 z B, B, | B,3- B,3 |\nw: start, I knew that I'd found a home for my heart ...beats fast\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n[V:Soprano] z6 | z6 | z6 | z3 B, D C |\nw: But watch-ing you\n[V:Alto] D2 C B,3 | B, B, B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 |\nw: Col-ors and pro-mi-ses How to be brave?\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n[V:Soprano] B,2 B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 | F E D C2 D |\nw: stand a-lone All of my doubt Sud-den-ly goes a-way\n[V:Alto] F2 E D2 C | D A, B, B, B, B, | z6 | z6 |\nw: How can I love when I'm a-fraid to fall?\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n% --- ONE STEP CLOSER 1 ---\n%\n[V:Soprano] A,2 B, A,3 | z3 G A B | B2 A- A3 |\nw: some-how One step clo-ser\n[V:Alto] z6 | z3 E F G | G2 F- F3 |\nw: One step clo-ser\n[V:Tenor] z6 | z6 | z6 |\nw:\n%\n% --- CHORUS 1 ---\n%\n[V:Soprano] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n[V:Soprano] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Tenor] z6 | z6 | z6 | z6 |\nw:\n%\n[V:Soprano] G, B, C B,3 | C E D B,3 | z6 |\nw: I'll love you for a thou-sand more\n[V:Alto] E, G, A, F,3 | A, C B, F,3 | z6 |\nw: I'll love you for a thou-sand more\n[V:Tenor] z6 | z6 | z6 |\nw:\n%\n% --- VERSE 2 (Steve Kazee) ---\n%\n[V:Soprano] z6 | z6 | z6 | z6 |\nw:\n[V:Alto] z6 | z6 | z6 | z6 |\nw:\n[V:Tenor] z3 B, B, B, | B,3- B,3 | D2 C B,3 | B, B, B, B,3 |\nw: Time stands still, Beau-ty in all she is,\n%\n[V:Soprano] z6 | z6 | z6 | z6 |\nw:\n[V:Alto] z6 | z6 | z6 | z6 |\nw:\n[V:Tenor] F2 E D2 (B,/G,/) | G,3- G,3 | F E D C2 D | A, B, B, B, B, B, |\nw: I will be brave, I will not let an-y-thing take a-way\n%\n[V:Soprano] z6 | z6 | z6 | z6 |\nw:\n[V:Alto] z6 | z6 | z6 | z6 |\nw:\n[V:Tenor] z3 B, D C | B,2 B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 |\nw: What's stand-ing in front of me, Eve-ry breath,\n%\n% --- ONE STEP CLOSER 2 ---\n%\n[V:Soprano] z6 | z6 | z3 G A B | B2 A- A3 |\nw: One step clo-ser\n[V:Alto] z6 | z6 | z3 E F G | G2 F- F3 |\nw: One step clo-ser\n[V:Tenor] F E D C2 D | A,2 B, A,3 | z3 B, C D | D2 C- C3 |\nw: Eve-ry hour has come to this, One step clo-ser\n%\n% --- CHORUS 2 (Duet / Trio) ---\n%\n[V:Soprano] F2 B F3 | F2 B F3 | d2 c F2 D | D3- D3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Tenor] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |\nw: I have died eve-ry-day wai-ting for you\n%\n[V:Soprano] F2 B F3 | F2 B F2 B | d2 c F2 D | D E F G F D |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Tenor] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n%\n[V:Soprano] D F G F3 | F G F D3 |\nw: I'll love you for a thou-sand more\n[V:Alto] E, G, A, F,3 | A, C B, F,3 |\nw: I'll love you for a thou-sand more\n[V:Tenor] G, B, C B,3 | C E D B,3 |\nw: I'll love you for a thou-sand more\n%\n% --- BRIDGE ---\n%\n[V:Soprano] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |\nw: And all a-long I be-lieved I would find you\n[V:Alto] z6 | z6 | z6 | z6 |\nw:\n[V:Tenor] z6 | z6 | z6 | D2 F D2 D |\nw: Time has brought your\n%\n[V:Soprano] z6 | d2 c F2 D | D E F G F D | D F G F3 |\nw: I have loved you for a thou-sand years I'll love you for\n[V:Alto] z6 | E2 D A,2 F, | G, A, B, C B, G, | E, G, A, F,3 |\nw: I have loved you for a thou-sand years I'll love you for\n[V:Tenor] D2 F D3 | G2 F C2 B, | B, C D E D G, | G, B, C B,3 |\nw: heart to me, I have loved you for a thou-sand years I'll love you for\n%\n[V:Soprano] F G F D3 | F G F D3 | z6 | z3 G A B | B2 c- c3 |\nw: a thou-sand more, a thou-sand more, One step clo-ser\n[V:Alto] A, C B, F,3 | A, C B, F,3 | z6 | z3 E F G | G2 A- A3 |\nw: a thou-sand more, a thou-sand more, One step clo-ser\n[V:Tenor] C E D B,3 | C E D B,3 | z3 B, C D | D2 C- C3 | z6 |\nw: a thou-sand more, a thou-sand more, One step clo-ser\n%\n% --- CHORUS 3: CLIMAX ---\n%\n[V:Soprano] F2 B F3 | F2 B F3 | d2 c F2 D | D3- D3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |\nw: I have died eve-ry-day wai-ting for you\n[V:Tenor] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |\nw: I have died eve-ry-day wai-ting for you\n%\n[V:Soprano] F2 B F3 | F2 B F2 B | d2 c F2 D | D E F G F D |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n[V:Tenor] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |\nw: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years\n%\n[V:Soprano] D F G F3 | F G F B3 |\nw: I'll love you for a thou-sand more\n[V:Alto] E, G, A, F,3 | A, C B, D3 |\nw: I'll love you for a thou-sand more\n[V:Tenor] G, B, C B,3 | C E D F3 |\nw: I'll love you for a thou-sand more\n%\n% --- OUTRO ---\n%\n[V:Soprano] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |\nw: And all a-long I be-lieved I would find you\n[V:Alto] z6 | z6 | z6 | D2 F D2 D |\nw: Time has brought your\n[V:Tenor] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |\nw: And all a-long I be-lieved I would find you\n%\n[V:Soprano] d2 c F2 D | D E F G F D | D F G F3 | F G F D3 |\nw: I have loved you for a thou-sand years I'll love you for a thou-sand more\n[V:Alto] D2 F D3 | G, A, B, C B, G, | E, G, A, F,3 | A, C B, F,3 |\nw: heart to me, for a thou-sand years I'll love you for a thou-sand more\n[V:Tenor] G2 F C2 B, | B, C D E D G, | G, B, C B,3 | C E D B,3 |\nw: I have loved you for a thou-sand years I'll love you for a thou-sand more\n%\n[V:Soprano] z3 G A B | B2 A- A3 | B6 |]\nw: One step clo-ser\n[V:Alto] z3 E F G | G2 F- F3 | F6 |]\nw: One step clo-ser\n[V:Tenor] z3 B, C D | D2 C- C3 | D6 |]\nw: One step clo-ser\n";
+
+function render() {
+  var visualObj = ABCJS.renderAbc("sheet-paper", fullAbc, {
+    responsive: "resize",
+    scale: 0.95,
+    staffwidth: 980,
+    add_classes: true
+  })[0];
+
+  if (ABCJS.synth.supportsAudio()) {
+    var synthControl = new ABCJS.synth.SynthController();
+    synthControl.load("#audio-player", null, {
+      displayRestart: true,
+      displayPlay: true,
+      displayProgress: true,
+      displayWarp: true
+    });
+    
+    var createSynth = new ABCJS.synth.CreateSynth();
+    createSynth.init({ visualObj: visualObj }).then(function() {
+      synthControl.setTune(visualObj, true).then(function() {
+        console.log("Audio player ready");
+      });
+    }).catch(function(error) {
+      console.warn("Audio synth error:", error);
+    });
+  }
+}
+
+window.addEventListener("load", render);
+</script>
+</body>
+</html>

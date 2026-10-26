@@ -1,0 +1,197 @@
+X:1
+T:A Thousand Years (Part 2)
+C:Christina Perri ft. Steve Kazee
+M:6/8
+L:1/8
+Q:3/8=50
+K:Bb
+%%score (Soprano Alto Tenor)
+V:Soprano name="Nữ cao" clef=treble
+V:Alto name="Nữ trầm" clef=treble
+V:Tenor name="Nam cao" clef=treble-8
+%
+% --- VERSE 1: PRELUDE ---
+%
+[V:Soprano] z6 | z6 | z6 | z6 |
+w:
+[V:Alto] z3 B, D F | F2 E D2 B, | C2 D B,3 | z3 B, D F |
+w: The day we met, Fro-zen I held my breath, Right from the
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+[V:Soprano] z6 | z6 | z6 | z6 |
+w:
+[V:Alto] F2 E D B, C | D2 C B,3 | z3 z B, B, | B,3- B,3 |
+w: start, I knew that I'd found a home for my heart ...beats fast
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+[V:Soprano] z6 | z6 | z6 | z3 B, D C |
+w: But watch-ing you
+[V:Alto] D2 C B,3 | B, B, B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 |
+w: Col-ors and pro-mi-ses How to be brave?
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+[V:Soprano] B,2 B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 | F E D C2 D |
+w: stand a-lone All of my doubt Sud-den-ly goes a-way
+[V:Alto] F2 E D2 C | D A, B, B, B, B, | z6 | z6 |
+w: How can I love when I'm a-fraid to fall?
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+% --- ONE STEP CLOSER 1 ---
+%
+[V:Soprano] A,2 B, A,3 | z3 G A B | B2 A- A3 |
+w: some-how One step clo-ser
+[V:Alto] z6 | z3 E F G | G2 F- F3 |
+w: One step clo-ser
+[V:Tenor] z6 | z6 | z6 |
+w:
+%
+% --- CHORUS 1 ---
+%
+[V:Soprano] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+[V:Soprano] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Tenor] z6 | z6 | z6 | z6 |
+w:
+%
+[V:Soprano] G, B, C B,3 | C E D B,3 | z6 |
+w: I'll love you for a thou-sand more
+[V:Alto] E, G, A, F,3 | A, C B, F,3 | z6 |
+w: I'll love you for a thou-sand more
+[V:Tenor] z6 | z6 | z6 |
+w:
+%
+% --- VERSE 2 (Steve Kazee) ---
+%
+[V:Soprano] z6 | z6 | z6 | z6 |
+w:
+[V:Alto] z6 | z6 | z6 | z6 |
+w:
+[V:Tenor] z3 B, B, B, | B,3- B,3 | D2 C B,3 | B, B, B, B,3 |
+w: Time stands still, Beau-ty in all she is,
+%
+[V:Soprano] z6 | z6 | z6 | z6 |
+w:
+[V:Alto] z6 | z6 | z6 | z6 |
+w:
+[V:Tenor] F2 E D2 (B,/G,/) | G,3- G,3 | F E D C2 D | A, B, B, B, B, B, |
+w: I will be brave, I will not let an-y-thing take a-way
+%
+[V:Soprano] z6 | z6 | z6 | z6 |
+w:
+[V:Alto] z6 | z6 | z6 | z6 |
+w:
+[V:Tenor] z3 B, D C | B,2 B, B,3 | F2 E D2 (B,/G,/) | G,3- G,3 |
+w: What's stand-ing in front of me, Eve-ry breath,
+%
+% --- ONE STEP CLOSER 2 ---
+%
+[V:Soprano] z6 | z6 | z3 G A B | B2 A- A3 |
+w: One step clo-ser
+[V:Alto] z6 | z6 | z3 E F G | G2 F- F3 |
+w: One step clo-ser
+[V:Tenor] F E D C2 D | A,2 B, A,3 | z3 B, C D | D2 C- C3 |
+w: Eve-ry hour has come to this, One step clo-ser
+%
+% --- CHORUS 2 (Duet / Trio) ---
+%
+[V:Soprano] F2 B F3 | F2 B F3 | d2 c F2 D | D3- D3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Tenor] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |
+w: I have died eve-ry-day wai-ting for you
+%
+[V:Soprano] F2 B F3 | F2 B F2 B | d2 c F2 D | D E F G F D |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Tenor] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+%
+[V:Soprano] D F G F3 | F G F D3 |
+w: I'll love you for a thou-sand more
+[V:Alto] E, G, A, F,3 | A, C B, F,3 |
+w: I'll love you for a thou-sand more
+[V:Tenor] G, B, C B,3 | C E D B,3 |
+w: I'll love you for a thou-sand more
+%
+% --- BRIDGE ---
+%
+[V:Soprano] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |
+w: And all a-long I be-lieved I would find you
+[V:Alto] z6 | z6 | z6 | z6 |
+w:
+[V:Tenor] z6 | z6 | z6 | D2 F D2 D |
+w: Time has brought your
+%
+[V:Soprano] z6 | d2 c F2 D | D E F G F D | D F G F3 |
+w: I have loved you for a thou-sand years I'll love you for
+[V:Alto] z6 | E2 D A,2 F, | G, A, B, C B, G, | E, G, A, F,3 |
+w: I have loved you for a thou-sand years I'll love you for
+[V:Tenor] D2 F D3 | G2 F C2 B, | B, C D E D G, | G, B, C B,3 |
+w: heart to me, I have loved you for a thou-sand years I'll love you for
+%
+[V:Soprano] F G F D3 | F G F D3 | z6 | z3 G A B | B2 c- c3 |
+w: a thou-sand more, a thou-sand more, One step clo-ser
+[V:Alto] A, C B, F,3 | A, C B, F,3 | z6 | z3 E F G | G2 A- A3 |
+w: a thou-sand more, a thou-sand more, One step clo-ser
+[V:Tenor] C E D B,3 | C E D B,3 | z3 B, C D | D2 C- C3 | z6 |
+w: a thou-sand more, a thou-sand more, One step clo-ser
+%
+% --- CHORUS 3: CLIMAX ---
+%
+[V:Soprano] F2 B F3 | F2 B F3 | d2 c F2 D | D3- D3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Alto] B,2 D B,3 | B,2 D B,3 | E2 D A,2 F, | F,3- F,3 |
+w: I have died eve-ry-day wai-ting for you
+[V:Tenor] D2 F D3 | D2 F D3 | G2 F C2 B, | B,3- B,3 |
+w: I have died eve-ry-day wai-ting for you
+%
+[V:Soprano] F2 B F3 | F2 B F2 B | d2 c F2 D | D E F G F D |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Alto] B,2 D B,3 | B,2 D B,2 D | E2 D A,2 F, | G, A, B, C B, G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+[V:Tenor] D2 F D3 | D2 F D2 F | G2 F C2 B, | B, C D E D G, |
+w: Dar-ling, don't be a-fraid, I have loved you for a thou-sand years
+%
+[V:Soprano] D F G F3 | F G F B3 |
+w: I'll love you for a thou-sand more
+[V:Alto] E, G, A, F,3 | A, C B, D3 |
+w: I'll love you for a thou-sand more
+[V:Tenor] G, B, C B,3 | C E D F3 |
+w: I'll love you for a thou-sand more
+%
+% --- OUTRO ---
+%
+[V:Soprano] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |
+w: And all a-long I be-lieved I would find you
+[V:Alto] z6 | z6 | z6 | D2 F D2 D |
+w: Time has brought your
+[V:Tenor] B, D F2 D2 | D F2 D3 | G2 F C2 B, | z6 |
+w: And all a-long I be-lieved I would find you
+%
+[V:Soprano] d2 c F2 D | D E F G F D | D F G F3 | F G F D3 |
+w: I have loved you for a thou-sand years I'll love you for a thou-sand more
+[V:Alto] D2 F D3 | G, A, B, C B, G, | E, G, A, F,3 | A, C B, F,3 |
+w: heart to me, for a thou-sand years I'll love you for a thou-sand more
+[V:Tenor] G2 F C2 B, | B, C D E D G, | G, B, C B,3 | C E D B,3 |
+w: I have loved you for a thou-sand years I'll love you for a thou-sand more
+%
+[V:Soprano] z3 G A B | B2 A- A3 | B6 |]
+w: One step clo-ser
+[V:Alto] z3 E F G | G2 F- F3 | F6 |]
+w: One step clo-ser
+[V:Tenor] z3 B, C D | D2 C- C3 | D6 |]
+w: One step clo-ser

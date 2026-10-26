@@ -1,0 +1,31 @@
+# Ignore everything by default
+*
+lyric_cards/
+frames/
+inspect_frames/
+video_frames/
+
+# Whitelist project core files
+!.gitignore
+!README.md
+!index.html
+!download_sheet.html
+!app.js
+!app.css
+!data.js
+!abcjs-basic-min.js
+!a_thousand_years_pt2.abc
+!A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf
+!A_Thousand_Years_Pt2_Sheet_Music.html
+!server.py
+!chay_online.py
+!chay_online.bat
+!vocal.mp3
+!instrumental.mp3
+!lyrics_video.mp4
+!calibrated_durations.json
+!calibrated_measures.json
+!video_lyric_cards_calibrated.json
+!audio_profile.json
+!yt_official_segments.json
+!site_urls.txt

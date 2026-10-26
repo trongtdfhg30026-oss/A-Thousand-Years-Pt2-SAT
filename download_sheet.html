@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Thousand Years (Pt. 2) - Sheet Nhac 3 Be SAT</title>
+  <script src="abcjs-basic-min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #e2e8f0;
+      color: #0f172a;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    @media screen {
+      .action-bar {
+        max-width: 840px;
+        margin: 16px auto;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        padding: 14px 22px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.08);
+      }
+      .action-bar h2 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e293b;
+      }
+      .action-bar p {
+        font-size: 12.5px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: all 0.2s ease;
+      }
+      .btn-print {
+        background: #1e40af;
+        color: #fff;
+      }
+      .btn-print:hover {
+        background: #1e3a8a;
+      }
+      .btn-pdf {
+        background: #047857;
+        color: #fff;
+      }
+      .btn-pdf:hover {
+        background: #065f46;
+      }
+      .a4-page {
+        width: 210mm;
+        height: 297mm;
+        max-height: 297mm;
+        min-height: 297mm;
+        box-sizing: border-box;
+        padding: 4mm 8mm 7mm 8mm;
+        margin: 0 auto 20px auto;
+        background: #fff;
+        box-shadow: 0 4px 24px rgba(0,0,0,.12);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+    }
+    @media print {
+      body {
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .action-bar {
+        display: none !important;
+      }
+      .a4-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        min-height: 297mm !important;
+        box-sizing: border-box !important;
+        padding: 4mm 8mm 7mm 8mm !important;
+        margin: 0 !important;
+        page-break-before: always !important;
+        page-break-after: always !important;
+        break-before: page !important;
+        break-after: page !important;
+        break-inside: avoid !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      .a4-page:first-child {
+        page-break-before: avoid !important;
+        break-before: avoid !important;
+      }
+      .a4-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+    }
+    .p1-header {
+      text-align: center;
+      border-bottom: 2px solid #1e40af;
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+    .p1-title {
+      font-family: "Playfair Display", serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #1e3a8a;
+      letter-spacing: 0.5px;
+    }
+    .p1-sub {
+      font-size: 7.5pt;
+      color: #475569;
+      margin-top: 1px;
+    }
+    .p1-legend {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 2px 0 1px 0;
+    }
+    .legend-item {
+      font-size: 7pt;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .sheet-content {
+      width: 100%;
+      flex: 1;
+      overflow: visible;
+    }
+    .sheet-content svg {
+      display: block;
+      margin: 0 auto;
+    }
+    .page-footer {
+      position: absolute;
+      bottom: 2.5mm;
+      left: 8mm;
+      right: 8mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: #64748b;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="action-bar">
+  <div>
+    <h2>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT</h2>
+    <p>Christina Perri ft. Steve Kazee &bull; Nhịp 6/8 &bull; Tone B&flat; &bull; Tiết Kiệm Giấy: Khổ A4 Chuẩn 7 Trang (5 System / Trang)</p>
+  </div>
+  <div style="display:flex; gap:10px;">
+    <a href="A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf" download class="btn btn-pdf">Tải File PDF (7 Trang)</a>
+    <button class="btn btn-print" onclick="window.print()">In Sheet (Ctrl+P)</button>
+  </div>
+</div>
+
+<div class="a4-page" id="page-1">
+  <div class="p1-header">
+    <div class="p1-title">A Thousand Years (Pt. 2)</div>
+    <div class="p1-sub">Christina Perri ft. Steve Kazee &bull; Phối bè 3 giọng SAT &bull; Nhịp 6/8 &bull; Tone B&flat;</div>
+    <div class="p1-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#be123c"></span>Nữ 1 &mdash; Soprano (Cao)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#6d28d9"></span>Nữ 2 &mdash; Alto (Trầm)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#0369a1"></span>Nam &mdash; Tenor (Hơi cao)</span>
+    </div>
+  </div>
+  <div class="sheet-content" id="sheet-1"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 1 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-2">
+  <div class="sheet-content" id="sheet-2"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 2 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-3">
+  <div class="sheet-content" id="sheet-3"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 3 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-4">
+  <div class="sheet-content" id="sheet-4"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 4 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-5">
+  <div class="sheet-content" id="sheet-5"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 5 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-6">
+  <div class="sheet-content" id="sheet-6"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 6 / 7</span>
+  </div>
+</div>
+<div class="a4-page" id="page-7">
+  <div class="sheet-content" id="sheet-7"></div>
+  <div class="page-footer">
+    <span>A Thousand Years (Pt. 2) &mdash; Sheet Nhạc 3 Bè SAT (Chuẩn A4)</span>
+    <span>Trang 7 / 7</span>
+  </div>
+</div>
+
+<script>
+const PAGES_ABC = ["X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"Nu 1 (Cao)\" snm=\"N1\" clef=treble\nV:Alto    name=\"Nu 2 (Tram)\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam (Cao)\"  snm=\"Nam\" clef=treble-8\n[V:Soprano] \"Bb\" z3 z2 D | \"Gm7\" D3- D3 | \"Eb\" z3 z2 F | \"Bb\" F3- F3 |\nw: (Mmm... | ...) | (Ooh... | ...) |\n[V:Alto] \"Bb\" z3 z2 B, | \"Gm7\" B,3- B,3 | \"Eb\" z3 z2 D | \"Bb\" D3- D3 |\nw: (Mmm... | ...) | (Ooh... | ...) |\n[V:Tenor] \"Bb\" z6 | \"Gm7\" z6 | \"Eb\" z6 | \"Bb\" z6 |\nw:  |  |  |  |\n% === Verse 1A: Solo Nu 1 (Cao) - Christina Perri (Nam nghi) ===\n[V:Soprano] \"Bb\" z4 D F | \"Bb\" B2 A B3 | \"Gm7\" G2 F D F G | \"Gm7\" F2 D D3 |\nw: The day | we met, _ | fro- zen I held my | breath. _ _ |\n[V:Alto] \"Bb\" z6 | \"Bb\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Tenor] \"Bb\" z6 | \"Bb\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Soprano] \"Eb\" B2 A G F G | \"Eb\" F E D C/2D/2 D2 | \"Bb\" z3 z D E | \"F\" D3- D3 |\nw: Right from the start, I | knew that I'd found a home | for my | heart... _ |\n[V:Alto] \"Eb\" z6 | \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |  |\n[V:Tenor] \"Eb\" z6 | \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |  |\n% === Verse 1B: Nữ 2 (Trầm) Lead + Nữ 1 (Cao) Bè (Nam nghỉ) ===\n[V:Soprano] \"Gm7\" F3 D3 | \"Eb\" D D D E D B | \"Bb\" d2 c B3 | \"F\" B3- B3 |\nw: (Beats fast) | (co- lors and pro- mi- ses) | (How to be) | brave? _ |\n[V:Alto] \"Gm7\" D3 B,3 | \"Eb\" B, B, B, C B, G | \"Bb\" F2 E D3 | \"F\" D3- D3 |\nw: Beats fast, | co- lors and pro- mi- ses, | How to be | brave? _ |\n[V:Tenor] \"Gm7\" z6 | \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |  |\n[V:Soprano] \"Gm7\" c c B A A G | \"Eb\" A E F F3 | \"F\" z3 z D E |\nw: How can I love when I'm | a- fraid to fall? _ | (Chuẩn bị) |\n[V:Alto] \"Gm7\" F F E D D C | \"Eb\" D A, B, B,3 | \"F\" z3 z B, C |\nw: How can I love when I'm | a- fraid to fall? _ | (Chuẩn bị) |\n[V:Tenor] \"Gm7\" z6 | \"Eb\" z6 | \"F\" z6 |\nw:  |  |  |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n% === Pre-Chorus 1: Nữ 1 Lead + Nữ 2 Bè trầm (Nam nghỉ) ===\n[V:Soprano] \"Gm7\" z3 z D F | \"Gm7\" D2 D D3 | \"Eb\" c2 B A3 |\nw: (watch- ing you) | stand a- lone, | All of my |\n[V:Alto] \"Gm7\" z3 z B, D | \"Gm7\" B,2 B, B,3 | \"Eb\" F2 E D3 |\nw: (watch- ing you) | stand a- lone, | All of my |\n[V:Tenor] \"Gm7\" z6 | \"Gm7\" z6 | \"Eb\" z6 |\nw:  |  |  |\n[V:Soprano] \"Eb\" F3- F3 | \"Bb\" c B A G A F | \"F\" G2 A G3 |\nw: doubt _ | sud- den- ly goes a- way | some- how. _ |\n[V:Alto] \"Eb\" D3- D3 | \"Bb\" F E D C D B, | \"F\" C2 D C3 |\nw: doubt _ | sud- den- ly goes a- way | some- how. _ |\n[V:Tenor] \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |\n% === Refrain 1: Song ca Nữ 1 + Nữ 2 (Nam nghỉ) ===\n[V:Soprano] \"Eb\" z3 z G B | \"F\" B2 c c3 | \"Bb\" B3- B3 |\nw: One step | clo- ser. _ | (Dồn trống) |\n[V:Alto] \"Eb\" z3 z E G | \"F\" G2 F F3 | \"Bb\" D3- D3 |\nw: One step | clo- ser. _ | (Dồn trống) |\n[V:Tenor] \"Eb\" z6 | \"F\" z6 | \"Bb\" z6 |\nw:  |  |  |\n% === Chorus 1: Nữ 1 Lead chính + Nữ 2 Bè trầm (Nam chuẩn bị) ===\n[V:Soprano] \"Bb\" F2 B F3 | \"F\" c/2c/2 B F E F G | \"Gm7\" F2 B F3 | \"Gm7\" F2 B F2 B |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Alto] \"Bb\" D2 F D3 | \"F\" G/2G/2 F C B, C D | \"Gm7\" D2 F D3 | \"Gm7\" D2 F D2 F |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Tenor] \"Bb\" z6 | \"F\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Soprano] \"Eb\" c2 B F3 | \"Eb\" E F G G2 E | \"Bb\" D2 F G3 | \"F\" G A B A F2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Alto] \"Eb\" G2 F C3 | \"Eb\" B, C D D2 B, | \"Bb\" B,2 D E3 | \"F\" E F G F D2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Tenor] \"Eb\" z6 | \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |  |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n[V:Soprano] \"Bb\" F3- F3 | \"Gm7\" D3- D3 | \"F\" z3 D F B |\nw: (More... | ...mmm...) | (Chuẩn bị) |\n[V:Alto] \"Bb\" D3- D3 | \"Gm7\" B,3- B,3 | \"F\" z3 B, D F |\nw: (More... | ...mmm...) | (Chuẩn bị) |\n[V:Tenor] \"Bb\" z6 | \"Gm7\" z6 | \"F\" z6 |\nw:  |  |  |\n% === Verse 2: Solo Nam (Steve Kazee) + Bè Nữ 2 ===\n[V:Soprano] \"Bb\" z6 | \"Bb\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Alto] \"Bb\" z6 | \"Bb\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Tenor] \"Bb\" z3 z F B | \"Bb\" B3- B3 | \"Gm7\" d2 c B3 | \"Gm7\" B2 B B3 |\nw: Time stands | still, _ | Beau- ty in | all she is, |\n[V:Soprano] \"Eb\" z6 | \"Eb\" z6 | \"Bb\" z6 | \"F\" z6 |\nw:  |  |  |  |\n[V:Alto] \"Eb\" z3 B, D E | \"Eb\" D3- D3 | \"Bb\" F2 F E D E | \"F\" D2 C B,3 |\nw: I will be | brave... _ | (take a- way...) | (take a- way...) |\n[V:Tenor] \"Eb\" f2 e d3 | \"Eb\" B3- B3 | \"Bb\" f/2f/2 e d c d B | \"F\" c2 d c3 |\nw: I will be | brave, _ | I will not let an- y- thing | take a- way... _ |\n% === Verse 2B: Nam Lead + Nữ 2 Bè Trầm (Nữ 1 đón) ===\n[V:Soprano] \"Gm7\" z6 | \"Gm7\" z6 | \"Eb\" z6 | \"Eb\" z6 | \"Bb\" z3 F A B | \"F\" c2 B c3 |\nw:  |  |  |  | has come | to this. _ |\n[V:Alto] \"Gm7\" z3 G B A | \"Gm7\" G2 G G3 | \"Eb\" F2 E D3 | \"Eb\" D3- D3 | \"Bb\" F E D C D B, | \"F\" C2 D C3 |\nw: what's stand- ing in | front of me, | Eve- ry | breath, _ | eve- ry hour has come | to this. _ |\n[V:Tenor] \"Gm7\" z3 B d c | \"Gm7\" B2 B B3 | \"Eb\" f2 e d3 | \"Eb\" B3- B3 | \"Bb\" f e d c d B | \"F\" c2 d c3 |\nw: what's stand- ing in | front of me, | Eve- ry | breath, _ | eve- ry hour has come | to this. _ |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n% === Refrain 2: Duet Nam + Nữ 1 (Nữ 2 Bè) ===\n[V:Soprano] \"Eb\" z3 z G B | \"F\" B2 c c3 | \"Bb\" B3- B3 |\nw: One step | clo- ser. _ | (Dàn dây dồn) |\n[V:Alto] \"Eb\" z3 z E G | \"F\" G2 F F3 | \"Bb\" D3- D3 |\nw: One step | clo- ser. _ | (Dàn dây dồn) |\n[V:Tenor] \"Eb\" z3 z B d | \"F\" d2 c c3 | \"Bb\" B3- B3 |\nw: One step | clo- ser. _ | (Dàn dây dồn) |\n% === Chorus 2: Tam ca 3 Bè (SAT Đại trào) ===\n[V:Soprano] \"Bb\" F2 B F3 | \"F\" c/2c/2 B F E F G | \"Gm7\" F2 B F3 | \"Gm7\" F2 B F2 B |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Alto] \"Bb\" D2 F D3 | \"F\" G/2G/2 F C B, C D | \"Gm7\" D2 F D3 | \"Gm7\" D2 F D2 F |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Tenor] \"Bb\" B2 d B3 | \"F\" e/2e/2 d A G A B | \"Gm7\" B2 d B3 | \"Gm7\" B2 d B2 d |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Soprano] \"Eb\" c2 B F3 | \"Eb\" E F G G2 E | \"Bb\" D2 F G3 | \"F\" G A B A F2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Alto] \"Eb\" G2 F C3 | \"Eb\" B, C D D2 B, | \"Bb\" B,2 D E3 | \"F\" E F G F D2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Tenor] \"Eb\" e2 d A3 | \"Eb\" G A B B2 G | \"Bb\" F2 B c3 | \"F\" c d e d B2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n% === Bridge: Nữ 1 -> Nam -> Tam ca SAT Đỉnh điểm ===\n[V:Soprano] \"Bb\" D2 F B2 F | \"Bb\" F B2 F3 | \"F\" c2 B F3 | \"F\" B3- B3 |\nw: And all a- long | I be- lieved | I would find | you. _ |\n[V:Alto] \"Bb\" B,2 D F2 D | \"Bb\" D F2 D3 | \"F\" G2 F C3 | \"F\" D3- D3 |\nw: (Ooh...) | be- lieved | would find | you. _ |\n[V:Tenor] \"Bb\" F2 B d2 B | \"Bb\" B d2 B3 | \"F\" e2 d A3 | \"F\" z3 F B d |\nw: (Ooh...) | be- lieved | would find | Time has brought |\n[V:Soprano] \"Gm7\" z3 F A B | \"Eb\" E F G G2 E | \"Bb\" D2 F G3 | \"F\" G A B A3 |\nw: (heart to me) | I have loved you | for a thou- sand years, | I'll love you |\n[V:Alto] \"Gm7\" z3 D F G | \"Eb\" B, C D D2 B, | \"Bb\" B,2 D E3 | \"F\" E F G F3 |\nw: (heart to me) | I have loved you | for a thou- sand years, | I'll love you |\n[V:Tenor] \"Gm7\" d B A B3 | \"Eb\" G A B B2 G | \"Bb\" F2 B c3 | \"F\" c d e d3 |\nw: your heart to me, | I have loved you | for a thou- sand years, | I'll love you |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n[V:Soprano] \"Eb\" F3 z G B | \"Bb\" B2 c B3- | \"Bb\" B3- B3 | \"Eb\" z6 |\nw: for a thou- sand | more. _ | (Cao trào) |  |\n[V:Alto] \"Eb\" D3 z E G | \"Bb\" G2 F G3- | \"Bb\" G3- G3 | \"Eb\" z6 |\nw: for a thou- sand | more. _ | (Cao trào) |  |\n[V:Tenor] \"Eb\" B3 z B d | \"Bb\" d2 c d3- | \"Bb\" d3- d3 | \"Eb\" z6 |\nw: for a thou- sand | more. _ | (Cao trào) |  |\n[V:Soprano] \"Bb\" D2 F G3 | \"F\" G A B A3 | \"Bb\" B3- B3 | \"F\" z6 |\nw: I'll love you | for a thou- sand | more. _ |  |\n[V:Alto] \"Bb\" B,2 D E3 | \"F\" E F G F3 | \"Bb\" D3- D3 | \"F\" z6 |\nw: I'll love you | for a thou- sand | more. _ |  |\n[V:Tenor] \"Bb\" F2 B c3 | \"F\" c d e d3 | \"Bb\" B3- B3 | \"F\" z6 |\nw: I'll love you | for a thou- sand | more. _ |  |\n% === Interlude (Cello Solo): Cello Solo & Tam ca Hòa âm ngân dịu ===\n[V:Soprano] \"Bb\" \"_ (Cello Solo)\" z6 | \"Gm7\" z6 | \"Eb\" z6 |\nw:  |  |  |\n[V:Alto] \"Bb\" \"_ (Cello Solo)\" z6 | \"Gm7\" z6 | \"Eb\" z6 |\nw:  |  |  |\n[V:Tenor] \"Bb\" \"_ (Trio)\" z6 | \"Gm7\" z6 | \"Eb\" z6 |\nw:  |  |  |\n[V:Soprano] \"Bb\" z3 \"F\" z3 | \"Bb\" F3- F3 | \"Gm7\" G3- G3 |\nw:  | (Mmm... | ...) |\n[V:Alto] \"Bb\" z3 \"F\" z3 | \"Bb\" D3- D3 | \"Gm7\" E3- E3 |\nw:  | (Mmm... | ...) |\n[V:Tenor] \"Bb\" z3 \"F\" z3 | \"Bb\" B3- B3 | \"Gm7\" c3- c3 |\nw:  | (Mmm... | ...) |\n[V:Soprano] \"Eb\" F3- F3 | \"Bb\" D3- D3 | \"F\" z3 z G B |\nw: (Ooh... | ...) | (Chuẩn bị) |\n[V:Alto] \"Eb\" D3- D3 | \"Bb\" B,3- B,3 | \"F\" z3 z E G |\nw: (Ooh... | ...) | (Chuẩn bị) |\n[V:Tenor] \"Eb\" B3- B3 | \"Bb\" G3- G3 | \"F\" z3 z B d |\nw: (Ooh... | ...) | (Chuẩn bị) |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n% === Refrain 3: Tam ca 3 Bè (Thì thầm mộc) ===\n[V:Soprano] \"Eb\" z3 z G B | \"F\" B2 c c3 | \"Bb\" B3- B3 |\nw: One step | clo- ser. _ | (Thì thầm) |\n[V:Alto] \"Eb\" z3 z E G | \"F\" G2 F F3 | \"Bb\" D3- D3 |\nw: One step | clo- ser. _ | (Thì thầm) |\n[V:Tenor] \"Eb\" z3 z B d | \"F\" d2 c c3 | \"Bb\" B3- B3 |\nw: One step | clo- ser. _ | (Thì thầm) |\n% === Chorus 3 (Intimate & Climax): Nữ 1 Solo Mộc -> Bùng nổ Tam ca SAT ===\n[V:Soprano] \"Bb\" F2 B F3 | \"F\" c/2c/2 B F E F G | \"Gm7\" F2 B F3 | \"Gm7\" F2 B F2 B |\nw: I have died | eve- ry day wai- ting for you. | Dar- ling, don't | be a- fraid, I |\n[V:Alto] \"Bb\" z6 | \"F\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Tenor] \"Bb\" z6 | \"F\" z6 | \"Gm7\" z6 | \"Gm7\" z6 |\nw:  |  |  |  |\n[V:Soprano] \"Eb\" c2 B F3 | \"Eb\" E F G G2 E | \"Bb\" D2 F G3 | \"F\" G A B A F2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Alto] \"Eb\" G2 F C3 | \"Eb\" B, C D D2 B, | \"Bb\" B,2 D E3 | \"F\" E F G F D2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n[V:Tenor] \"Eb\" e2 d A3 | \"Eb\" G A B B2 G | \"Bb\" F2 B c3 | \"F\" c d e d B2 |\nw: have loved you | for a thou- sand years, | I'll love you | for a thou- sand more. |\n% === Outro & Climax: Tam ca 3 Bè SAT Polyphony & Kết ===\n[V:Soprano] \"Bb\" D2 F B2 F | \"Bb\" F B2 F3 | \"F\" c2 B F3 | \"F\" B3- B3 |\nw: And all a- long | I be- lieved | I would find | you. _ |\n[V:Alto] \"Bb\" B,2 D F2 D | \"Bb\" D F2 D3 | \"F\" G2 F C3 | \"F\" D3- D3 |\nw: And all a- long | I be- lieved | I would find | you. _ |\n[V:Tenor] \"Bb\" F2 B d2 B | \"Bb\" B d2 B3 | \"F\" e2 d A3 | \"F\" z3 F B d |\nw: And all a- long | I be- lieved | I would find | Time has brought |\n[V:Soprano] \"Gm7\" z3 F A B | \"Eb\" E F G G2 E | \"Bb\" D2 F G3 |\nw: (heart to me) | for a thou- sand years, | I'll love you |\n[V:Alto] \"Gm7\" z3 D F G | \"Eb\" B, C D D2 B, | \"Bb\" B,2 D E3 |\nw: (heart to me) | for a thou- sand years, | I'll love you |\n[V:Tenor] \"Gm7\" d B A B3 | \"Eb\" G A B B2 G | \"Bb\" F2 B c3 |\nw: your heart to me, | for a thou- sand years, | I'll love you |", "X:1\nM:6/8\nL:1/8\nK:Bb\n%%score [ Soprano | Alto | Tenor ]\n%%stretchlast 1\nV:Soprano name=\"N1\" snm=\"N1\" clef=treble\nV:Alto    name=\"N2\" snm=\"N2\" clef=treble\nV:Tenor   name=\"Nam\" snm=\"Nam\" clef=treble-8\n[V:Soprano] \"F\" G A B A3 | \"Eb\" F3 z G B | \"Bb\" B2 c B3- |\nw: for a thou- sand | more. One step | clo- ser. _ |\n[V:Alto] \"F\" E F G F3 | \"Eb\" D3 z E G | \"Bb\" G2 F G3- |\nw: for a thou- sand | more. One step | clo- ser. _ |\n[V:Tenor] \"F\" c d e d3 | \"Eb\" B3 z B d | \"Bb\" d2 c d3- |\nw: for a thou- sand | more. One step | clo- ser. _ |\n% === Coda & Kết: Trio Ngân dịu & Fade out ===\n[V:Soprano] \"Bb\" F3- F3 | \"Gm7\" D3- D3 | \"Eb\" G3- G3 | \"Bb\" F3- F3 |\nw: (Clo- ser... | ...mmm...) | (Mmm... | ...) |\n[V:Alto] \"Bb\" D3- D3 | \"Gm7\" B,3- B,3 | \"Eb\" E3- E3 | \"Bb\" D3- D3 |\nw: (Clo- ser... | ...mmm...) | (Mmm... | ...) |\n[V:Tenor] \"Bb\" B3- B3 | \"Gm7\" G3- G3 | \"Eb\" B3- B3 | \"Bb\" B3- B3 |\nw: (Clo- ser... | ...mmm...) | (Mmm... | ...) |"];
+
+function renderAll() {
+  PAGES_ABC.forEach(function(abc, idx) {
+    var pid = idx + 1;
+    ABCJS.renderAbc("sheet-" + pid, abc, {
+      scale: 0.60,
+      staffwidth: 705,
+      paddingtop: 0,
+      paddingbottom: 0,
+      paddingleft: 0,
+      paddingright: 0,
+      add_classes: true
+    });
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", renderAll);
+} else {
+  renderAll();
+}
+</script>
+</body>
+</html>
