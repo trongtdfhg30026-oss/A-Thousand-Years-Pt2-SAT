@@ -1,11 +1,12 @@
-LINK TRUY CAP SITE - A THOUSAND YEARS 3 BE SAT
+LINK TRUY CAP ONLINE (GITHUB PAGES - HOAT DONG 24/7)
 ==================================================
-[DUNG DUOC CHO CA DIEN THOAI VA MAY TINH]
-- May phat nhac online: https://vertex-weed-icons-enjoying.trycloudflare.com/index.html
-- Xem va in sheet online: https://vertex-weed-icons-enjoying.trycloudflare.com/download_sheet.html
-- Tai truc tiep PDF: https://vertex-weed-icons-enjoying.trycloudflare.com/A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf
+[DUNG DUOC CHO CA DIEN THOAI, MAY TINH, MAY TINH BANG]
+- May phat nhac & karaoke online : https://trongtdfhg30026-oss.github.io/A-Thousand-Years-Pt2-SAT/index.html
+- Xem va in sheet A4 online      : https://trongtdfhg30026-oss.github.io/A-Thousand-Years-Pt2-SAT/download_sheet.html
+- Tai truc tiep Sheet PDF (A4)   : https://trongtdfhg30026-oss.github.io/A-Thousand-Years-Pt2-SAT/A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf
+- Ma nguon GitHub Repo           : https://github.com/trongtdfhg30026-oss/A-Thousand-Years-Pt2-SAT
 
-[DUNG TREN MAY TINH NAY (LOCAL)]
-- May phat nhac local: http://localhost:8765/index.html
-- Xem va in sheet local: http://localhost:8765/download_sheet.html
-- Tai file PDF local: http://localhost:8765/A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf
+[DUNG TREN MAY TINH NAY (LOCAL - KHONG CAN INTERNET)]
+- May phat nhac local : http://localhost:8765/index.html
+- Xem va in sheet     : http://localhost:8765/download_sheet.html
+- Tai file PDF local  : http://localhost:8765/A_Thousand_Years_Pt2_Sheet_Music_3Be_SAT.pdf
